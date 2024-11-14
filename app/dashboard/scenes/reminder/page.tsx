@@ -22,7 +22,7 @@ export default function Home() {
 
     // Call the API route to send the email
     try {
-      const res = await fetch('/api/sendEmail', {
+      const res = await fetch('/api/test/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -211,7 +211,7 @@
 
 import { useAuth } from '../../provider/auth-provider';
 
-
+import axios from 'axios';
 import { useEffect,useState } from "react";
 // import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { ProSidebar, Menu, MenuItem } from "../../../../react-pro-sidebar";
@@ -267,26 +267,26 @@ const Sidebar = () => {
 
   const { getToken } = useAuth();  // Getting token from the auth provider
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-        try {
-            const response = await axios.get('http://localhost:8000/api/profile_view', {
-                headers: {
-                    "Authorization": `Token ${getToken()}`,
-                    "Content-Type": "application/json",
-                },
-            });
-            console.log(response.data)
-            setUser(response.data); // Set the user data in state
-            setLoading(false); // Stop loading
-        } catch (error) {
-            console.error('Error fetching user profile:', error);
-            setLoading(false); // Stop loading in case of error
-        }
-    };
+//   useEffect(() => {
+//     const fetchUserProfile = async () => {
+//         try {
+//             const response = await axios.get('http://localhost:8000/api/profileview', {
+//                 headers: {
+//                     "Authorization": `Token ${getToken()}`,
+//                     "Content-Type": "application/json",
+//                 },
+//             });
+//             console.log(response.data)
+//             setUser(response.data); // Set the user data in state
+//             setLoading(false); // Stop loading
+//         } catch (error) {
+//             console.error('Error fetching user profile:', error);
+//             setLoading(false); // Stop loading in case of error
+//         }
+//     };
 
-    fetchUserProfile();
-}, [getToken]); // Run effect when component mounts and when token changes
+//     fetchUserProfile();
+// }, [getToken]); // Run effect when component mounts and when token changes
 
 // if (loading) {
 //   return (
@@ -402,6 +402,14 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+                  <Item
+            title="Reminder"
+             to="/dashboard/scenes/reminder"
+             icon={<AssistantOutlinedIcon />}
+             selected={selected}
+          setSelected={setSelected}
+           />
+
                 <Item
               title="Notifications"
               to="/dashboard/scenes/notifications"
@@ -419,6 +427,13 @@ const Sidebar = () => {
                           <Item
               title="Surprise me "
               to="/dashboard/scenes/surpriseme"
+              icon={<PeopleOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+                                     <Item
+              title="Investment Advice"
+              to="/dashboard/scenes/investadvice"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
