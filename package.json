@@ -20,6 +20,7 @@
     "@heroicons/react": "^1.0.6",
     "@hookform/resolvers": "^3.9.1",
     "@langchain/core": "^0.3.18",
+    "@mui/icons-material": "^6.1.7",
     "@mui/material": "^6.1.7",
     "@nivo/line": "^0.87.0",
     "@radix-ui/react-checkbox": "^1.1.2",
