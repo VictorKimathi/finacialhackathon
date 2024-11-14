@@ -36,10 +36,6 @@ const EXPENSE_CATEGORIES = [
     { value: 'utilities', label: 'Utilities' }
 ];
 
-
-
-
-
 const transactionCategoryOptions = [
     { label: "Income", value: 'Income' },
     { label: "Expense", value: 'Expense' }
@@ -67,38 +63,37 @@ const TransactionForm = ({ onSubmit, disabled }) => {
     useEffect(() => {
         const transactionType = form.watch("transaction_type");
         setCategoryOptions(transactionType === 'Income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES);
-        console.log("Category OPtions",categoryOptions)
         form.setValue("category", null); // Reset category whenever transaction type changes
     }, [form.watch("transaction_type")]);
 
     // Handle form submission
     const handleFormSubmit = async (data) => {
         try {
+            // Concatenate transaction details into a single string
+            const transactionString = `${data.transaction_type} ${data.category} ${data.amount} ${data.description || ''}`;
+
+            // Generate a dummy embedding array
+            const embeddingArray = Array(1536).fill(Math.random()); // Replace this with actual embeddings if available
+
+            // Prepare data for submission
             const formattedData = {
-                account_number: data.account_number.toString(), // Ensuring account number is a string
-                amount: parseFloat(data.amount) , // Formatting amount as a decimal string with 2 decimal places
-                transaction_type: data.transaction_type.toLowerCase(), // Assuming valid enum values are handled elsewhere
-                category: data.category.toLowerCase(), // Assuming valid enum values are handled elsewhere
-                description: data.description ? data.description.slice(0, 1) : "", // Enforcing maxLength of 1 on description
+                account_number: data.account_number.toString(),
+                amount: parseFloat(data.amount),
+                transaction_type: data.transaction_type.toLowerCase(),
+                category: data.category.toLowerCase(),
+                description: data.description || '',
+                transaction_string: transactionString,
+                embeddings: embeddingArray,
             };
-            
-            console.log("transaction data", formattedData);
 
+            console.log("Transaction Data with Embedding:", formattedData);
 
-
-            
-            const response = await axios.post(
-                "http://localhost:8000/api/transactions/",
-                formattedData,
-                {
-                    headers: {
-                        Authorization: `Token ${getToken()}`,
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-
-            console.log("Transaction saved:", response.data);
+            // Send data to your API
+            const response = await axios.post('/api/test/', {
+                content: formattedData,
+                embeddings: Array(1536).fill(Math.random()),  // Dummy embedding array
+            });
+            console.log("Transaction saved with embedding:", response.data);
             onSubmit(formattedData);
         } catch (error) {
             console.error("Error saving transaction:", error);
@@ -151,7 +146,6 @@ const TransactionForm = ({ onSubmit, disabled }) => {
                         <FormLabel>Amount</FormLabel>
                         <FormControl>
                             <Input
-                                
                                 step="0.01"
                                 disabled={disabled}
                                 placeholder="e.g., 1000"

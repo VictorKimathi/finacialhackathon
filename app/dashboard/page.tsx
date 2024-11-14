@@ -2,7 +2,7 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "./theme";
 // import "./"
-
+import axios from 'axios';
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
@@ -33,6 +33,27 @@ const Dashboard = () => {
   const { onOpen } = useNewTransaction();
   const { onGoalOpen } = useNewGoal()
   // const {onOpen} = useNewDebt();
+
+
+  async function testEmbedding() {
+      const dummyText = "Test document content for embedding and matching.";
+      try {
+          const response = await axios.post('/api/test/', {
+              content: dummyText,
+              embeddings: Array(1536).fill(Math.random()),  // Dummy embedding array
+          });
+          console.log('Response:', response.data);
+      } catch (error) {
+          console.error('Test embedding error:', error);
+      }
+  }
+  
+  testEmbedding();
+  
+
+
+
+
 
   // const {onOpen} = useNewNotification();
   const { onAnomallyDetectionOpen } = useNewAnomallyDetection();
