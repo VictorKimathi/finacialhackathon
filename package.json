@@ -53,6 +53,7 @@
     "react-toastify": "^10.0.6",
     "react-use": "^17.5.1",
     "recharts": "^2.13.3",
+    "rimraf": "^6.0.1",
     "switch": "^0.0.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
