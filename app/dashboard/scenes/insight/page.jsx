@@ -3,6 +3,7 @@
     import React, { useEffect, useState } from 'react';
     import axios from 'axios';
     import { useAuth } from '../../provider/auth-provider';
+    import { base_url } from "../../../../env.js"
 
     const Insight = () => {
   const { getToken } = useAuth();
@@ -97,10 +98,10 @@
 
       useEffect(() => {
         setLoading(true);
-        fetchData("http://localhost:8000/api/total-debt/", setTotalDebt);
-        fetchData("http://localhost:8000/api/total-account-balance/", setAccountBalance);
-        fetchData("http://localhost:8000/api/transactions/", setAllTransactions);
-        fetchData("http://localhost:8000/api/financial-goals/", setFinancialGoals);
+        fetchData(`${base_url}/total-debt/`, setTotalDebt);
+        fetchData(`${base_url}/api/total-account-balance/`, setAccountBalance);
+        fetchData(`${base_url}/api/transactions/`, setAllTransactions);
+        fetchData(`${base_url}/api/financial-goals/`, setFinancialGoals);
         setLoading(false);
       }, []);
 

@@ -1,5 +1,6 @@
 "use client"
 import React from 'react';
+import { base_url } from "../../../../env.js"
 
 const Notifications = () => {
   return (

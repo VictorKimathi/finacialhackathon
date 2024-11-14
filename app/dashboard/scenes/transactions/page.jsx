@@ -1,7 +1,9 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-
+import {base_url} from "../../../../env.js"
 import { useAuth } from '../../provider/auth-provider';
+import { base_url } from "../../../../env.js"
+
 const TransactionTable = () => {
   const { getToken } = useAuth();
 
@@ -10,7 +12,7 @@ const TransactionTable = () => {
 
   const fetchAllTransactions = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/transactions/`, {
+      const response = await fetch(`${base_url}/api/transactions/`, {
         method: "GET",
         headers: {
           "Authorization":`Token ${getToken()}`,

@@ -48,7 +48,7 @@ export default function SavingsForm() {
 
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/savings/',  // Assuming the endpoint to save savings data
+        `${base_url}/api/savings/`,  // Assuming the endpoint to save savings data
         savingsData,
         {
           headers: {

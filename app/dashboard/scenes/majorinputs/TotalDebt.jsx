@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 // Placeholder function for retrieving the token
 import { useAuth } from '../../provider/auth-provider';
+import { base_url } from "../../../../env.js"
 
 const TotalDebt = () => {
   const { getToken } = useAuth();
@@ -14,7 +15,7 @@ const TotalDebt = () => {
     const fetchTotalDebt = async () => {
       try {
         // Updated URL for the debts endpoint
-        const response = await fetch(`http://localhost:8000/api/debts/`, {
+        const response = await fetch(`${base_url}/api/debts/`, {
           method: 'GET',
           headers: {
             'Authorization': `Token ${getToken()}`,

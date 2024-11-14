@@ -6,6 +6,7 @@ import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
+import { base_url } from "../../../../env.js"
 
 // Fetch data helper function
 const fetchData = async (url, setState, transformData) => {

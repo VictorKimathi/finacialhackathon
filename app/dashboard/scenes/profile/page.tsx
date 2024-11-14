@@ -13,6 +13,7 @@ import TransactionForm from '../transactionForm/page';
 import Profile from './Profile';
 import { useNewProfile } from '../../hooks/use_new_profile';
 
+import { base_url } from "../../../../env.js"
 
 
 const ProfileSheet = () => {

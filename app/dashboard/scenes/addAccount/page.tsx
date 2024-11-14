@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from 'axios';
 import { z } from "zod";
+import { base_url } from "../../../../env"
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -58,7 +59,7 @@ const saveAccountToServer = async (data: FormValues, getToken: () => string) => 
 
     try {
         const response = await axios.post(
-            "http://localhost:8000/api/accounts/",
+        `${base_url}/api/accounts/`,
             {
                 user: 1,
                 ...data,

@@ -41,7 +41,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchTotalDebt = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/total-debt/`, {
+        const response = await fetch(`${base_url}/api/total-debt/`, {
           method: "GET",
           headers: {
             "Authorization":`Token ${getToken()}`,
@@ -64,7 +64,7 @@ const Dashboard = () => {
     // Moved the totalAccountBalance function to be a separate function
     const totalAccountBalance = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/total-account-balance/`, {
+        const response = await fetch(`${base_url}/api/total-account-balance/`, {
           method: "GET",
           headers: {
             "Authorization":`Token ${getToken()}`,
@@ -86,7 +86,7 @@ const Dashboard = () => {
 
     const fetchAllTransactions = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/transactions/`, {
+        const response = await fetch(`${base_url}/api/transactions/`, {
           method: "GET",
           headers: {
             "Authorization":`Token ${getToken()}`,
@@ -108,7 +108,7 @@ const Dashboard = () => {
 
     const fetchFinancialGoals = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/financial-goals/`, {
+        const response = await fetch(`${base_url}/api/financial-goals/`, {
           method: "GET",
           headers: {
             "Authorization":`Token ${getToken()}`,
@@ -131,7 +131,7 @@ const Dashboard = () => {
     // Fetch Financial Summary
     const fetchFinancialSummary = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/financial-summary/`, {
+        const response = await fetch(`${base_url}/api/financial-summary/`, {
           method: "GET",
           headers: {
             "Authorization":`Token ${getToken()}`,

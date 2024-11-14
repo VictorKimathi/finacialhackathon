@@ -4,6 +4,7 @@ import { tokens } from "./../../theme";
 // import "./"
 
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import AddIcon from '@mui/icons-material/Add';
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 // import "./InputForm"
@@ -34,11 +35,7 @@ const page = () => {
     const router = useRouter();
     const { onOpen } = useNewTransaction();
     const { onGoalOpen } = useNewGoal()
-    // const {onOpen} = useNewDebt();
-  
-    // const {onOpen} = useNewNotification();
-    const { onAnomallyDetectionOpen } = useNewAnomallyDetection();
-    const { onPersonalizedGoalOpen } = useNewPersonalizedGoal();
+
   
   
     const { onAccountOpen } = useNewAccount();
@@ -68,7 +65,9 @@ const page = () => {
 
             }}
           >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+            {/* <DownloadOutlinedIcon sx={{ mr: "10px" }} /> */}
+            < AddIcon sx={{ mr: "10px" }}/>
+
             Add Debt
           </Button>
           <Button
@@ -83,7 +82,8 @@ const page = () => {
 
             }}
           >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+            {/* <DownloadOutlinedIcon sx={{ mr: "10px" }} /> */}
+            < AddIcon sx={{ mr: "10px" }}/>
             Add Saving
           </Button>
           <Button
@@ -98,7 +98,9 @@ const page = () => {
 
             }}
           >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+            {/* <DownloadOutlinedIcon sx={{ mr: "10px" }} /> */}
+            < AddIcon sx={{ mr: "10px" }}/>
+
             Add Goal
           </Button>
           <Button
@@ -113,7 +115,9 @@ const page = () => {
 
             }}
           >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+            {/* <DownloadOutlinedIcon sx={{ mr: "10px" }} /> */}
+            < AddIcon sx={{ mr: "10px" }}/>
+
             Add Transaction
           </Button>
           <Button
@@ -126,7 +130,9 @@ const page = () => {
               padding: "10px 20px",
             }}
           >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+            {/* <DownloadOutlinedIcon sx={{ mr: "10px" }} /> */}
+            < AddIcon sx={{ mr: "10px" }}/>
+
             Add Account
           </Button>
  

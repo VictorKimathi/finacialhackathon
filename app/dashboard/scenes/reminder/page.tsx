@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { base_url } from "../../../../env.js"
 
 export default function Home() {
   const [reminder, setReminder] = useState('');

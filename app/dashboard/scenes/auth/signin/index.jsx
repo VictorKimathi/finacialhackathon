@@ -30,7 +30,7 @@ const Page = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/api/token/', apiData);
+            const response = await axios.post(`${base_url}/api/token/`, apiData);
             setToken(response.data.token);
             console.log('Token received:', response.data.token);
             router.push('/dashboard');

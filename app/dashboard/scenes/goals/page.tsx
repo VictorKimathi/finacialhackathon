@@ -8,6 +8,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { base_url } from "../../../../env.js"
 
 export default function FinancialGoalForm() {
   const { getToken } = useAuth();
@@ -43,7 +44,7 @@ export default function FinancialGoalForm() {
 
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/financial-goals/',
+        `${base_url}/api/financial-goals/`,
         financialGoalData,
         {
           headers: {

@@ -55,7 +55,7 @@ const Register = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/api/register/', apiData);
+            const response = await axios.post(`${base_url}/api/register/`, apiData);
             console.log('Registration successful:', response.data);
             router.replace('/auth/login');
         } catch (error) {

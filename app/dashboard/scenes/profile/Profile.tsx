@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../provider/auth-provider'; // Assuming this provides the token
+import { base_url } from "../../../../env.js"
 
 const Profile = () => {
     const { getToken } = useAuth();  // Getting token from the auth provider
@@ -20,7 +21,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/profileview', {
+                const response = await axios.get(`${base_url}/api/profileview`, {
                     headers: {
                         "Authorization": `Token ${getToken()}`,
                         "Content-Type": "application/json",

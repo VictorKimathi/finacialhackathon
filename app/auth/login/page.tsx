@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 // import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
+import { base_url } from "../../../env"
 
 export default function LoginComponent() {
   const router = useRouter()
@@ -23,28 +24,23 @@ export default function LoginComponent() {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit =async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would typically send the form data to your backend
     console.log('Login form submitted:', formData)
 
-
-
     try {
-      const response = await axios.post('http://localhost:8000/api/token/', formData);
+      const response = await axios.post(`${base_url}/api/token/`, formData);
       console.log('Login successful:', response.data);
       localStorage.setItem('token', response.data.token); 
       console.log("Token setting",localStorage.getItem('token'));
-      router.replace('/preference/account/'); // Redirect to login
-  } catch (error) {
+      router.replace('/preference/account/'); 
+    } catch (error) {
       console.error('Error during registration:', error.response ? error.response.data : error.message);
+    }
   }
-  
-    // router.push("/dashboard")
-    // toast({
-    //   title: "Login Successful",
-    //   description: "Welcome back!",
-    // })
+
+  const navigateToRegister = () => {
+    router.push('/auth/register'); // Replace with the actual registration route
   }
 
   return (
@@ -82,8 +78,11 @@ export default function LoginComponent() {
             </div>
           </form>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="space-y-2">
           <Button className="w-full" onClick={handleSubmit}>Login</Button>
+          <Button variant="outline" className="w-full mt-2" onClick={navigateToRegister}>
+            Don't have an account? Sign Up
+          </Button>
         </CardFooter>
       </Card>
     </div>

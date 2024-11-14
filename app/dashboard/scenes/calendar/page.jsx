@@ -10,6 +10,7 @@ import Header from "../../components/Header";
 import { tokens } from "../../theme";
 // Import formatDate from @fullcalendar/core
 import { formatDate } from '@fullcalendar/core';
+import { base_url } from "../../../../env.js"
 
 const Calendar = () => {
   const theme = useTheme();

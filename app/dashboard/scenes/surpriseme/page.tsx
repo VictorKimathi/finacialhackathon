@@ -4,6 +4,7 @@ import './thinking.css';
 import { Box, Paper, Typography, IconButton, Stack, Button } from '@mui/material';
 import axios from 'axios';
 import { useAuth } from '../../provider/auth-provider';
+import { base_url } from "../../../../env"
 
 // The fun prompt to send to Gemini
 const promptMessage = `
@@ -18,6 +19,9 @@ Include Emoji in your response
 Be fun, be smart, and keep it relevant to the user’s financial situation. Go ahead, surprise them with some financial fun!
 `;
 
+//  npm run build
+// transactionform
+
 const Chat = () => {
   const { getToken } = useAuth();
   const [messages, setMessages] = useState([]);
@@ -25,13 +29,13 @@ const Chat = () => {
 
   const handleMagicButtonClick = async () => {
     setIsLoading(true);
-
+  
     // Clear the previous assistant response before adding the new one
     setMessages([{ role: 'user', content: "Surprise me with some fun financial insights!" }]);
-
+  
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/chat/send_chat/",
+        `${base_url}/api/chat/send_chat/`, // Template string in use
         { message: promptMessage, mode: 'normal' },
         {
           headers: {
@@ -40,9 +44,9 @@ const Chat = () => {
           },
         }
       );
-
+  
       const assistantReply = response.data.response;
-
+  
       // Set the new assistant response, keeping only the latest one
       setMessages([
         { role: 'user', content: "Surprise me with some fun financial insights!" },
@@ -58,6 +62,7 @@ const Chat = () => {
       setIsLoading(false);
     }
   };
+  
 
   const LoadingDots = () => (
     <div className="loading-dots">

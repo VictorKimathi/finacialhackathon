@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import TrafficIcon from '@mui/icons-material/Traffic';
 import EmailIcon from '@mui/icons-material/Email';
+import { base_url } from "../../../../env.js"
 
 const ReportPage = () => {
   const { getToken } = useAuth();
@@ -27,9 +28,9 @@ const ReportPage = () => {
     const fetchData = async () => {
       try {
         const [summaryRes, debtRes, balanceRes] = await Promise.all([
-          fetch('http://localhost:8000/api/financial-summary/', { method: 'GET', headers: { "Authorization": `Token ${getToken()}` } }),
-          fetch('http://localhost:8000/api/total-debt/', { method: 'GET', headers: { "Authorization": `Token ${getToken()}` } }),
-          fetch('http://localhost:8000/api/total-account-balance/', { method: 'GET', headers: { "Authorization": `Token ${getToken()}` } })
+          fetch(`${base_url}/api/financial-summary/`, { method: 'GET', headers: { "Authorization": `Token ${getToken()}` } }),
+          fetch(`${base_url}/api/total-debt/`, { method: 'GET', headers: { "Authorization": `Token ${getToken()}` } }),
+          fetch(`${base_url}/api/total-account-balance/`, { method: 'GET', headers: { "Authorization": `Token ${getToken()}` } })
         ]);
 
         if (!summaryRes.ok || !debtRes.ok || !balanceRes.ok) {

@@ -65,7 +65,7 @@ const Chat = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/chat/send_chat/",
+        `${base_url}/api/chat/send_chat/`,
         { message: newMessage, mode: chatMode },
         {
           headers: {

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../provider/auth-provider';
 
+import { base_url } from "../../../../env.js"
 const DebtForm = () => {
   const { getToken } = useAuth();
 
@@ -35,7 +36,7 @@ const DebtForm = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:8000/api/debts/",
+        `${base_url}/api/debts`,
         debtPayload,
         {
           headers: {

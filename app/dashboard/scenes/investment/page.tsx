@@ -12,6 +12,7 @@ import {
   SheetTitle
 } from "@/components/ui/sheet";
 import { useNewInvestment } from '../../hooks/use_new_investements';
+import { base_url } from "../../../../env.js"
 
 interface Investment {
   name: string;

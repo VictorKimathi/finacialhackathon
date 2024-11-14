@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import './FinancialInputPage.css'; // Import the CSS file
+import { base_url } from "../../../../env.js"
 
 const FinancialInputPage = () => {
   const [transactions, setTransactions] = useState([
@@ -34,7 +35,7 @@ const FinancialInputPage = () => {
         description: transactionData.description,
       };
       const response = await axios.post(
-        "http://localhost:8000/api/transactions/",
+        `${base_url}/api/transactions/`,
         transactionPayload,
         {
           headers: {
@@ -59,7 +60,7 @@ const FinancialInputPage = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:8000/api/debts/",
+        `${base_url}/api/debts/`,
         debtPayload,
         {
           headers: {
@@ -85,7 +86,7 @@ const FinancialInputPage = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:8000/api/accounts/",
+        `${base_url}/api/accounts/`,
         bankPayload,
         {
           headers: {

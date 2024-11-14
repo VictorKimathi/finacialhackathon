@@ -234,6 +234,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import AssistantOutlinedIcon from '@mui/icons-material/AssistantOutlined';
 import { useRouter } from "next/navigation";
+import { base_url } from "../../../../env.js"
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -431,6 +432,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+                                      <Item
+              title="Credit Score "
+              to="/dashboard/scenes/creditScore"
+              icon={<PeopleOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
                                      <Item
               title="Investment Advice"
               to="/dashboard/scenes/investadvice"
@@ -496,8 +504,8 @@ const Sidebar = () => {
               Pages
             </Typography>
             <Item
-              title="Profile Form"
-              to="/dashboard/scenes/form"
+              title="Fraud Detection"
+              to="/dashboard/scenes/fraud"
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

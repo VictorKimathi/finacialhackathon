@@ -7,8 +7,6 @@
         SheetHeader,
         SheetTitle
     } from "@/components/ui/sheet"
-import { useNewAccount } from '../../hooks/use_new_account';
-import AccountForm from '../addAccount/page';
 import DebtForm from '../mydebts/page';
 import { useNewDebt } from '../../hooks/use_new_debt';
 

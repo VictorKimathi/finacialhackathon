@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useAuth } from '../../provider/auth-provider';
 import Header from "../../components/Header";
 import { useRouter } from 'next/navigation';
+import { base_url } from "../../../../env.js"
 
 const fetchData = async (url, setState, transformData = data => data) => {
   try {
@@ -101,11 +102,11 @@ const AIHub = () => {
 
   const fetchUserFinancialData = useCallback(() => {
     const endpoints = [
-      { url: 'http://localhost:8000/api/total-debt/', field: 'totalDebt' },
-      { url: 'http://localhost:8000/api/total-account-balance/', field: 'accountBalance' },
-      { url: 'http://localhost:8000/api/transactions/', field: 'allTransactions' },
-      { url: 'http://localhost:8000/api/financial-goals/', field: 'financialGoals' },
-      { url: 'http://localhost:8000/api/financial-summary/', field: 'financialSummary' },
+      { url: `${base_url}/total-debt/`, field: 'totalDebt' },
+      { url: `${base_url}/api/total-account-balance/`, field: 'accountBalance' },
+      { url: `${base_url}/api/transactions/`, field: 'allTransactions' },
+      { url: `${base_url}/api/financial-goals/`, field: 'financialGoals' },
+      { url: `${base_url}/api/financial-summary/`, field: 'financialSummary' },
     ];
 
     endpoints.forEach(endpoint => {
@@ -123,7 +124,7 @@ const AIHub = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/chat/send_chat/",
+        `${base_url}/api/chat/send_chat/`,
         { message: promptMessage, mode: 'normal' },
         { headers: { "Authorization": `Token ${getToken()}`, "Content-Type": "application/json" } }
       );

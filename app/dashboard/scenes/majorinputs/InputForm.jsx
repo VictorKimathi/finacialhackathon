@@ -1,6 +1,7 @@
 // pages/financial-goals.js
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../provider/auth-provider';
+import { base_url } from "../../../../env"
 
 const FinancialGoals = () => {
   const { getToken } = useAuth();
@@ -12,7 +13,7 @@ const FinancialGoals = () => {
     // Fetch data from the Django API
     const fetchGoals = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/financial-goals/', {
+        const response = await fetch(`${base_url}/api/financial-goals/`, {
           method: 'GET',
           headers: {
             "Authorization": `Token ${getToken()}`,

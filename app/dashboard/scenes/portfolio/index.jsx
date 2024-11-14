@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ChevronLeft, TrendingDown, TrendingUp } from "lucide-react";
 import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Sector } from "recharts";
+import { base_url } from "../../../../env.js"
 
 const portfolioData = [
   { name: "Stocks", value: 50000 },

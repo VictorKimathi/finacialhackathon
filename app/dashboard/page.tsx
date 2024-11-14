@@ -24,6 +24,7 @@ import { useNewInvestment } from "./hooks/use_new_investements";
 import { useNewPersonalizedGoal } from "./hooks/use_new_personalized";
 import { useNewAnomallyDetection } from "./hooks/use_new_anomally";
 import { base_url } from "../../env"
+
 const Dashboard = () => {
   const { getToken } = useAuth();
   console.log("DashBoard Token", getToken())
@@ -103,7 +104,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchTotalDebt = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/total-debt/`, {
+        const response = await fetch(`${base_url}/api/total-debt/`, {
           method: "GET",
           headers: {
             "Authorization": `Token ${getToken()}`,
@@ -149,7 +150,7 @@ const Dashboard = () => {
 
     const fetchAllTransactions = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/transactions/`, {
+        const response = await fetch(`${base_url}/api/transactions/`, {
           method: "GET",
           headers: {
             "Authorization": `Token ${getToken()}`,
@@ -171,7 +172,7 @@ const Dashboard = () => {
 
     const fetchFinancialGoals = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/financial-goals/`, {
+        const response = await fetch(`${base_url}/api/financial-goals/`, {
           method: "GET",
           headers: {
             "Authorization": `Token ${getToken()}`,
@@ -194,7 +195,7 @@ const Dashboard = () => {
     // Fetch Financial Summary
     const fetchFinancialSummary = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/financial-summary/`, {
+        const response = await fetch(`${base_url}/api/financial-summary/`, {
           method: "GET",
           headers: {
             "Authorization": `Token ${getToken()}`,
@@ -216,7 +217,7 @@ const Dashboard = () => {
     
     const fetchAccounts = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/accounts/`, {
+        const response = await fetch(`${base_url}/api/accounts/`, {
           method: "GET",
           headers: {
             "Authorization": `Token ${getToken()}`,

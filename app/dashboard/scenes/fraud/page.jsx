@@ -1,8 +1,12 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { base_url } from "../../../../env.js"
+import { useAuth } from '../../provider/auth-provider';
 
 const Index = () => {
+  const { getToken } = useAuth();  // Getting token from the auth provider
+
   const [allTransactions, setAllTransactions] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -10,10 +14,10 @@ const Index = () => {
   // Fetch all transactions from the API
   const fetchAllTransactions = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/transactions/`, {
+      const response = await fetch(`${base_url}/api/transactions/`, {
         method: 'GET',
         headers: {
-          Authorization: 'Token a01f62ad50e3b6396af09169b66ec073162a8bb6',
+          Authorization: `Token ${getToken()}`,
           'Content-Type': 'application/json',
         },
       });
@@ -36,11 +40,11 @@ const Index = () => {
     try {
       const transactionsString = JSON.stringify(transactions);
       const response = await axios.post(
-        'http://localhost:8000/api/chat/send_chat/',
+        `${base_url}/api/chat/send_chat/`,
         { message: transactionsString },
         {
           headers: {
-            Authorization: 'Token a01f62ad50e3b6396af09169b66ec073162a8bb6',
+            Authorization: `Token ${getToken()}`,
             'Content-Type': 'application/json',
           },
         }
