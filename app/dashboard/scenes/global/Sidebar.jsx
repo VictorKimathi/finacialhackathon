@@ -212,7 +212,7 @@
 import { useAuth } from '../../provider/auth-provider';
 
 
-import { useState } from "react";
+import { useEffect,useState } from "react";
 // import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { ProSidebar, Menu, MenuItem } from "../../../../react-pro-sidebar";
 
@@ -262,7 +262,47 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-  
+  const [user , setUser] = useState(null)
+  const [loading, setLoading] = useState(true); // Loading state
+
+  const { getToken } = useAuth();  // Getting token from the auth provider
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/profile_view', {
+                headers: {
+                    "Authorization": `Token ${getToken()}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            console.log(response.data)
+            setUser(response.data); // Set the user data in state
+            setLoading(false); // Stop loading
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+            setLoading(false); // Stop loading in case of error
+        }
+    };
+
+    fetchUserProfile();
+}, [getToken]); // Run effect when component mounts and when token changes
+
+// if (loading) {
+//   return (
+//       <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
+//           Loading...
+//       </div>
+//   );
+// }
+
+// if (!user) {
+//   return (
+//       <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
+//           Error loading user profile.
+//       </div>
+//   );
+// }
 
   return (
     <Box
@@ -330,10 +370,10 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Victor Codes
+                  {/* {user.name} */}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  User 
+                  {/* {user.email} */}
                 </Typography>
               </Box>
             </Box>
@@ -372,6 +412,13 @@ const Sidebar = () => {
                       <Item
               title="Manage Inputs"
               to="/dashboard/scenes/majorinputs"
+              icon={<PeopleOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+                          <Item
+              title="Surprise me "
+              to="/dashboard/scenes/surpriseme"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

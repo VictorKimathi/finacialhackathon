@@ -2,37 +2,40 @@
 import { useState, useEffect } from 'react';
 
 // Placeholder function for retrieving the token
-const getToken = () => 'your_token_here';
+import { useAuth } from '../../provider/auth-provider';
 
 const TotalDebt = () => {
+  const { getToken } = useAuth();
+
   const [totalDebt, setTotalDebt] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTotalDebt = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/total-debt/`, {
-          method: "GET",
+        // Updated URL for the debts endpoint
+        const response = await fetch(`http://localhost:8000/api/debts/`, {
+          method: 'GET',
           headers: {
-            "Authorization": `Token ${getToken()}`,
-            "Content-Type": "application/json",
+            'Authorization': `Token ${getToken()}`,
+            'Content-Type': 'application/json',
           },
         });
 
         if (!response.ok) {
-          throw new Error("Failed to fetch total debt");
+          throw new Error('Failed to fetch debts');
         }
 
         const data = await response.json();
-        console.log("Total debt:", data.total_debt);
-        setTotalDebt(data.total_debt); // Assuming `data.total_debt` is an array of debts
+        console.log('Debts data:', data);
+        setTotalDebt(data); // Assuming the response is an array of debts
       } catch (err) {
         setError(err.message);
       }
     };
 
     fetchTotalDebt();
-  }, []);
+  }, [getToken]);
 
   return (
     <div style={{ padding: '2rem' }}>

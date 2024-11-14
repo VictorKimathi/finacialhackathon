@@ -31,9 +31,12 @@ export default function FinancialGoalForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Convert duration from weeks to months (assuming 4 weeks = 1 month)
+    const duration_months = Math.ceil(parseInt(formData.duration_weeks, 10) / 4);
+
     const financialGoalData = {
       amount_needed: parseFloat(formData.amount_needed),
-      duration_weeks: parseInt(formData.duration_weeks, 10),
+      duration_months: duration_months,  // Send duration in months
       description: formData.description,
       goal_type: formData.goal_type,
     };

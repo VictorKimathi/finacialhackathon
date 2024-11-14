@@ -18,7 +18,8 @@ const FinancialGoals = () => {
             "Authorization": `Token ${getToken()}`,
             "Content-Type": "application/json",
           },
-          credentials: 'include' // Optional: Use this if you need to send cookies
+          
+          
         });
 
         if (!response.ok) {

@@ -1,13 +1,66 @@
-// components/UserProfile.js
-import React from 'react';
+"use client";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useAuth } from '../../provider/auth-provider'; // Assuming this provides the token
+
 const Profile = () => {
-    const user = {
-        name:"Victor codes",
-        email:"victorcodes9532@gmail.com",
-        avatar:"/"
+    const { getToken } = useAuth();  // Getting token from the auth provider
+    const [user, setUser] = useState(null); // State to hold user data
+    const [loading, setLoading] = useState(true); // Loading state
+    const [error, setError] = useState(null); // State to hold error messages
+
+    const onLogout = () => {
+        // Logic for logging out (e.g., clearing the token, redirecting to login)
+        console.log("Logging out...");
+        // Clear token and navigate to login page if using routing (e.g., React Router)
+        // Example: localStorage.removeItem('authToken');
+        // window.location.href = '/login';
+    };
+
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/profileview', {
+                    headers: {
+                        "Authorization": `Token ${getToken()}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                setUser(response.data); // Set the user data in state
+                setLoading(false); // Stop loading
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
+                setError('Error loading user profile. Please try again later.');
+                setLoading(false); // Stop loading in case of error
+            }
+        };
+
+        fetchUserProfile();
+    }, [getToken]); // Run effect when component mounts (getToken is stable)
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
+                Loading...
+            </div>
+        );
     }
 
-    const onLogout = false
+    if (error) {
+        return (
+            <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
+                {error}
+            </div>
+        );
+    }
+
+    if (!user) {
+        return (
+            <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
+                Error loading user profile.
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 p-4">
@@ -15,7 +68,7 @@ const Profile = () => {
                 {/* Profile Picture */}
                 <div className="flex flex-col items-center">
                     <img
-                        src={user.avatar || "/default-avatar.png"}
+                        src={user.avatar || "/default-avatar.png"}  // Fallback to default avatar if no avatar
                         alt="User avatar"
                         className="w-24 h-24 rounded-full border-2 border-blue-500 mb-4"
                     />
@@ -25,14 +78,18 @@ const Profile = () => {
 
                 {/* Profile Information */}
                 <div className="mt-6 space-y-4">
-                    <div className="flex items-center">
-                        <span className="font-medium text-gray-100 w-1/3">Name:</span>
-                        <span className="text-gray-100">{user.name}</span>
-                    </div>
-                    <div className="flex items-center">
-                        <span className="font-medium text-gray-100 w-1/3">Email:</span>
-                        <span className="text-gray-100">{user.email}</span>
-                    </div>
+                    {user.name && (
+                        <div className="flex items-center">
+                            <span className="font-medium text-gray-100 w-1/3">Name:</span>
+                            <span className="text-gray-100">{user.name}</span>
+                        </div>
+                    )}
+                    {user.email && (
+                        <div className="flex items-center">
+                            <span className="font-medium text-gray-100 w-1/3">Email:</span>
+                            <span className="text-gray-100">{user.email}</span>
+                        </div>
+                    )}
                     {/* Additional user info fields can go here */}
                 </div>
 
