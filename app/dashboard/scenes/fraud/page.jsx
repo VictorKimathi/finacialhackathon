@@ -4,7 +4,7 @@ import axios from 'axios';
 import { base_url } from "../../../../env.js"
 import { useAuth } from '../../provider/auth-provider';
 
-const Index = () => {
+const Fraud = () => {
   const { getToken } = useAuth();  // Getting token from the auth provider
 
   const [allTransactions, setAllTransactions] = useState([]);
@@ -51,9 +51,9 @@ const Index = () => {
       );
 
       const fraudResults = response.data; // Assume AI response contains an array with fraud status for each transaction
-      const updatedTransactions = transactions.map((transaction, index) => ({
+      const updatedTransactions = transactions.map((transaction, Fraud) => ({
         ...transaction,
-        isFraud: fraudResults[index]?.isFraud || false,
+        isFraud: fraudResults[Fraud]?.isFraud || false,
       }));
 
       setAllTransactions(updatedTransactions);
@@ -98,8 +98,8 @@ const Index = () => {
               <td colSpan="6" style={{ padding: '10px', fontSize: '18px', textAlign: 'center' }}>No transactions found.</td>
             </tr>
           ) : (
-            allTransactions.map((transaction, index) => (
-              <tr key={index}>
+            allTransactions.map((transaction, Fraud) => (
+              <tr key={Fraud}>
                 <td style={{ padding: '10px', fontSize: '18px', border: '1px solid black' }}>{transaction.account_number}</td>
                 <td style={{ padding: '10px', fontSize: '18px', border: '1px solid black' }}>${Number(transaction.amount).toFixed(2)}</td>
                 <td style={{ padding: '10px', fontSize: '18px', border: '1px solid black' }}>{transaction.transaction_type}</td>
@@ -115,4 +115,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Fraud;

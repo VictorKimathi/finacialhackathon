@@ -24,6 +24,7 @@ import { useNewInvestment } from "./hooks/use_new_investements";
 import { useNewPersonalizedGoal } from "./hooks/use_new_personalized";
 import { useNewAnomallyDetection } from "./hooks/use_new_anomally";
 import { base_url } from "../../env"
+import Fraud from "../dashboard/scenes/fraud/page"
 
 const Dashboard = () => {
   const { getToken } = useAuth();
@@ -36,20 +37,20 @@ const Dashboard = () => {
   // const {onOpen} = useNewDebt();
 
 
-  async function testEmbedding() {
-      const dummyText = "Test document content for embedding and matching.";
-      try {
-          const response = await axios.post('/api/test/', {
-              content: dummyText,
-              embeddings: Array(1536).fill(Math.random()),  // Dummy embedding array
-          });
-          console.log('Response:', response.data);
-      } catch (error) {
-          console.error('Test embedding error:', error);
-      }
-  }
+  // async function testEmbedding() {
+  //     const dummyText = "Test document content for embedding and matching.";
+  //     try {
+  //         const response = await axios.post('/api/test/', {
+  //             content: dummyText,
+  //             embeddings: Array(1536).fill(Math.random()),  // Dummy embedding array
+  //         });
+  //         console.log('Response:', response.data);
+  //     } catch (error) {
+  //         console.error('Test embedding error:', error);
+  //     }
+  // }
   
-  testEmbedding();
+  // testEmbedding();
   
 
 
@@ -461,7 +462,7 @@ const Dashboard = () => {
             }
           />
         </Box>
-        <Box
+        {/* <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[400]}
           display="flex"
@@ -479,7 +480,7 @@ const Dashboard = () => {
               />
             }
           />
-        </Box>
+        </Box> */}
 
         
  
@@ -589,7 +590,8 @@ const Dashboard = () => {
           <Typography variant="h5" fontWeight="600">
             Fraud Detection Analysis
           </Typography>
-          Under Development
+          {/* Under Development */}
+          {/* <Fraud /> */}
 
           {/* <Box
             display="flex"
@@ -626,7 +628,7 @@ const Dashboard = () => {
           <Box height="250px">
 
             {/* <BarChart isDashboard={true} /> */}
-            Under Development
+            {/* Under Development */}
           </Box>
         </Box>
         <Box
@@ -643,7 +645,7 @@ const Dashboard = () => {
             Credit Score Analysis
           </Typography>
           <Box height="200px">
-            Under Development
+            {/* Under Development */}
             {/* <GeographyChart isDashboard={true} /> */}
           </Box>
         </Box>

@@ -8,7 +8,7 @@ import ChatMessages from '../../components/ChatMessage';
 import ChatInput from '../../components/ChatInput';
 import axios from 'axios';
 import { useAuth } from '../../provider/auth-provider';
-
+import { base_url } from '@/env';
 const suggestions = [
   "How can I save more based on my recent spending?",
   "What are some budgeting tips for me?",

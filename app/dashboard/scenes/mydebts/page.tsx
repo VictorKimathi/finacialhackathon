@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../provider/auth-provider';
+import { base_url } from "../../../../env.js";
 
-import { base_url } from "../../../../env.js"
 const DebtForm = () => {
   const { getToken } = useAuth();
 
-  // Define debt types
+  // Debt Types
   const DEBT_TYPES = [
     { value: 'credit_card', label: 'Credit Card' },
     { value: 'personal_loan', label: 'Personal Loan' },
@@ -20,12 +20,12 @@ const DebtForm = () => {
   const [debt, setDebt] = useState([{ amount: '', debt_type: '', debt_name: '' }]);
   const [successMessage, setSuccessMessage] = useState('');
 
-  // Function to handle adding new debt entry
-  const handleAddDebt = () => {
+  // Handle new debt entry
+  const handleAddDebt = useCallback(() => {
     setDebt([...debt, { amount: '', debt_type: '', debt_name: '' }]);
-  };
+  }, [debt]);
 
-  // Function to handle form submission
+  // Save Debt
   const saveDebtData = async (debtData) => {
     try {
       const debtPayload = {
@@ -36,7 +36,7 @@ const DebtForm = () => {
       };
 
       const response = await axios.post(
-        `${base_url}/api/debts`,
+        `${base_url}/api/debts/`,
         debtPayload,
         {
           headers: {
@@ -46,40 +46,37 @@ const DebtForm = () => {
         }
       );
       console.log("Debt saved:", response.data);
-      return true; // Return true on success
+      return true;
     } catch (error) {
       console.error("Error saving debt:", error);
-      return false; // Return false on error
+      return false;
     }
   };
 
-  // Function to handle input changes
-  const handleInputChange = (index, field, value) => {
+  // Handle Input Change
+  const handleInputChange = useCallback((index, field, value) => {
     setDebt(debt.map((debtItem, i) =>
       i === index ? { ...debtItem, [field]: value } : debtItem
     ));
-  };
+  }, [debt]);
 
-  // Function to submit all debts
-  const handleSubmit = async () => {
+  // Submit All Debts
+  const handleSubmit = useCallback(async () => {
     const promises = debt.map(saveDebtData);
     const results = await Promise.all(promises);
 
-    // Check if all debts were successfully saved
-    if (results.every(result => result === true)) {
+    if (results.every(result => result)) {
       setSuccessMessage("All debts saved successfully! Reloading...");
 
-      // Clear fields
       setDebt([{ amount: '', debt_type: '', debt_name: '' }]);
 
-      // Reload the page after a short delay
       setTimeout(() => {
         window.location.reload();
       }, 2000);
     } else {
       alert("Some debts could not be saved. Please try again.");
     }
-  };
+  }, [debt, getToken]);
 
   return (
     <div className="debt-form space-y-4">

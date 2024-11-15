@@ -1,21 +1,92 @@
-"use client"
-import React from 'react';
-import { base_url } from "../../../../env.js"
+"use client";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { base_url } from "../../../../env.js";
+import { useAuth } from '../../provider/auth-provider';
+
+// Helper function to create a prompt template based on transactions
+const createPromptFromTransactions = (transactions) => {
+  return `Based on the following recent transactions, generate notifications:
+    ${transactions.map((txn, index) => (
+      `Transaction ${index + 1}: Type: ${txn.type}, Amount: $${txn.amount}, Date: ${txn.date}, Category: ${txn.category}.`
+    )).join(" ")}
+  Generate concise notifications with a focus on financial insights, like large deposits, savings goals, or upcoming bills.`;
+};
 
 const Notifications = () => {
+  const { getToken } = useAuth();
+  const [notifications, setNotifications] = useState([]);
+  const [creditScore, setCreditScore] = useState(720); // Dummy credit score data
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        // Fetch transactions from the API
+        const txnResponse = await fetch(`${base_url}/api/transactions/`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Token ${getToken()}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!txnResponse.ok) {
+          throw new Error('Failed to fetch transactions');
+        }
+
+        const transactions = await txnResponse.json();
+        console.log("Transactions data:", transactions);
+
+        // Create prompt for AI based on transactions
+        const prompt = createPromptFromTransactions(transactions);
+
+        // Send the prompt to the AI service
+        const aiResponse = await axios.post(
+          `${base_url}/api/chat/send_chat/`,
+          { message: prompt, mode: 'normal' },
+          {
+            headers: {
+              "Authorization": `Token ${getToken()}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // Make sure the response is an array of strings
+        const response = Array.isArray(aiResponse.data.response)
+          ? aiResponse.data.response
+          : [aiResponse.data.response];
+
+        setNotifications(response);
+        console.log("Notifications data from AI:", response);
+
+      } catch (error) {
+        console.error("Error generating notifications:", error);
+        setNotifications(["There was an error fetching notifications. Please try again later."]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotifications();
+  }, [getToken]);
+
+  if (loading) {
+    return <div>Loading notifications...</div>;
+  }
+
   return (
-    <div  style={{margin: 50}}>
-      <div
-        style={{
-          backgroundColor: '#1f2937',
-          border: '1px solid #4b5563',
-          borderRadius: '8px',
-          padding: '16px',
-          maxWidth: '400px',
-          color: '#fff',
-          fontFamily: 'Arial, sans-serif'
-        }}
-      >
+    <div style={{ margin: 50 }}>
+      <div style={{
+        backgroundColor: '#1f2937',
+        border: '1px solid #4b5563',
+        borderRadius: '8px',
+        padding: '16px',
+        maxWidth: '400px',
+        color: '#fff',
+        fontFamily: 'Arial, sans-serif'
+      }}>
         <div style={{ marginBottom: '12px' }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: '600', margin: '0' }}>
             Recent Notifications
@@ -24,66 +95,16 @@ const Notifications = () => {
             Stay updated on your financial activities
           </p>
         </div>
-        <div>
-          <ul style={{ listStyle: 'none', padding: '0', margin: '0' }}>
-            {/* Notification 1 */}
-            <li style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '16px' }}>
-              <div
-                style={{
-                  height: '8px',
-                  width: '8px',
-                  marginTop: '4px',
-                  borderRadius: '50%',
-                  backgroundColor: '#10b981',
-                }}
-              ></div>
-              <div style={{ marginLeft: '8px' }}>
-                <p style={{ fontWeight: '600', margin: '0' }}>Large Deposit Detected</p>
-                <p style={{ fontSize: '0.875rem', color: '#9ca3af', margin: '4px 0' }}>
-                  A deposit of $5,000 was made to your account.
-                </p>
-                <p style={{ fontSize: '0.75rem', color: '#6b7280' }}>2 hours ago</p>
-              </div>
-            </li>
-            {/* Notification 2 */}
-            <li style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '16px' }}>
-              <div
-                style={{
-                  height: '8px',
-                  width: '8px',
-                  marginTop: '4px',
-                  borderRadius: '50%',
-                  backgroundColor: '#facc15',
-                }}
-              ></div>
-              <div style={{ marginLeft: '8px' }}>
-                <p style={{ fontWeight: '600', margin: '0' }}>Upcoming Bill Payment</p>
-                <p style={{ fontSize: '0.875rem', color: '#9ca3af', margin: '4px 0' }}>
-                  Your electricity bill of $150 is due in 3 days.
-                </p>
-                <p style={{ fontSize: '0.75rem', color: '#6b7280' }}>1 day ago</p>
-              </div>
-            </li>
-            {/* Notification 3 */}
-            <li style={{ display: 'flex', alignItems: 'flex-start' }}>
-              <div
-                style={{
-                  height: '8px',
-                  width: '8px',
-                  marginTop: '4px',
-                  borderRadius: '50%',
-                  backgroundColor: '#10b981',
-                }}
-              ></div>
-              <div style={{ marginLeft: '8px' }}>
-                <p style={{ fontWeight: '600', margin: '0' }}>Savings Goal Achieved</p>
-                <p style={{ fontSize: '0.875rem', color: '#9ca3af', margin: '4px 0' }}>
-                  Congratulations! You've reached your savings goal of $10,000.
-                </p>
-                <p style={{ fontSize: '0.75rem', color: '#6b7280' }}>3 days ago</p>
-              </div>
-            </li>
-          </ul>
+        <div style={{ color: '#9ca3af' }}>
+          {notifications.length > 0 ? (
+            notifications.join(', ') // Join notifications as a string
+          ) : (
+            <p>No notifications available.</p>
+          )}
+        </div>
+
+        <div style={{ marginTop: '16px' }}>
+          <p>Credit Score: <strong>{creditScore}</strong></p>
         </div>
       </div>
     </div>

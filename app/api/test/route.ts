@@ -1,108 +1,108 @@
-// import nodemailer from 'nodemailer';
-// import { NextResponse } from 'next/server';
-
-// export async function POST(req) {
-//   try {
-//     // Log the incoming request data
-//     const { reminder, reminderDate, email } = await req.json();
-//     console.log('Received request data:', { reminder, reminderDate, email });
-
-//     // Ensure email and reminder are present
-//     if (!email || !reminder || !reminderDate) {
-//       console.error('Missing required fields in request:', { email, reminder, reminderDate });
-//       return NextResponse.json(
-//         { error: 'Missing required fields: email, reminder, or reminderDate.' },
-//         { status: 400 }
-//       );
-//     }
-
-//     // Setup the transporter for sending email
-//     const transporter = nodemailer.createTransport({
-//       service: 'gmail',
-//       auth: {
-//         user: process.env.EMAIL_USER,
-//         pass: process.env.EMAIL_PASS,
-//       },
-//     });
-
-//     // Log transporter details (sensitive data redacted)
-//     console.log('Email transporter configured:', {
-//       user: process.env.EMAIL_USER,
-//       service: 'gmail',
-//     });
-
-//     // Create email options
-//     const mailOptions = {
-//       from: process.env.EMAIL_USER,
-//       to: email,
-//       subject: `Reminder: ${reminder}`,
-//       text: `You requested a reminder for: ${reminder}\nDate & Time: ${new Date(reminderDate).toLocaleString()}`,
-//     };
-
-//     // Log the email options being sent
-//     console.log('Sending email with the following options:', mailOptions);
-
-//     // Attempt to send the email
-//     const info = await transporter.sendMail(mailOptions);
-//     console.log('Email sent successfully:', info);
-
-//     // Return success response
-//     return NextResponse.json(
-//       { message: 'Email sent successfully!', info },
-//       { status: 200 }
-//     );
-//   } catch (error) {
-//     // Log detailed error for debugging
-//     console.error('Error sending email:', error);
-
-//     // Capture and return the error response with details
-//     return NextResponse.json(
-//       { error: 'Failed to send email', details: error.message, stack: error.stack },
-//       { status: 500 }
-//     );
-//   }
-// }
-
-// imimport nodemailer from 'nodemailer';
-import { createClient } from '@supabase/supabase-js';
-import axios from 'axios';
-
-// Ensure environment variables are loaded (if running locally)
-import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
 import { NextResponse } from 'next/server';
-dotenv.config();
 
-const supabaseUrl = process.env.SUPABASE_URL_LC_CHATBOT;
-const supabaseKey = process.env.SUPABASE_API_KEY;
-const client = createClient(supabaseUrl, supabaseKey);
+export async function POST(req) {
+  try {
+    // Log the incoming request data
+    const { reminder, reminderDate, email } = await req.json();
+    console.log('Received request data:', { reminder, reminderDate, email });
 
-export async function POST(req, res) {
-    try {
-        const { content, embeddings } = await req.json(); // Assumes req body is JSON
-
-        // Store the document and its embeddings in the Supabase `documents` table
-        const { error: insertError } = await client
-            .from('documents')
-            .insert([{ content, embedding: embeddings }]);
-
-        if (insertError) throw insertError;
-
-        // Retrieve matching documents
-        const { data: matches, error: matchError } = await client.rpc('match_documents', {
-            query_embedding: embeddings,
-            match_threshold: 0.8,
-            match_count: 5
-        });
-
-        if (matchError) throw matchError;
-
-        // Send a JSON response with matched documents
-        return NextResponse.json({ matches });
-    } catch (error) {
-        console.error('Error storing/retrieving embeddings:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    // Ensure email and reminder are present
+    if (!email || !reminder || !reminderDate) {
+      console.error('Missing required fields in request:', { email, reminder, reminderDate });
+      return NextResponse.json(
+        { error: 'Missing required fields: email, reminder, or reminderDate.' },
+        { status: 400 }
+      );
     }
+
+    // Setup the transporter for sending email
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    // Log transporter details (sensitive data redacted)
+    console.log('Email transporter configured:', {
+      user: process.env.EMAIL_USER,
+      service: 'gmail',
+    });
+
+    // Create email options
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: `Reminder: ${reminder}`,
+      text: `You requested a reminder for: ${reminder}\nDate & Time: ${new Date(reminderDate).toLocaleString()}`,
+    };
+
+    // Log the email options being sent
+    console.log('Sending email with the following options:', mailOptions);
+
+    // Attempt to send the email
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', info);
+
+    // Return success response
+    return NextResponse.json(
+      { message: 'Email sent successfully!', info },
+      { status: 200 }
+    );
+  } catch (error) {
+    // Log detailed error for debugging
+    console.error('Error sending email:', error);
+
+    // Capture and return the error response with details
+    return NextResponse.json(
+      { error: 'Failed to send email', details: error.message, stack: error.stack },
+      { status: 500 }
+    );
+  }
 }
+
+// // imimport nodemailer from 'nodemailer';
+// import { createClient } from '@supabase/supabase-js';
+// import axios from 'axios';
+
+// // Ensure environment variables are loaded (if running locally)
+// import dotenv from 'dotenv';
+// import { NextResponse } from 'next/server';
+// dotenv.config();
+
+// const supabaseUrl = process.env.SUPABASE_URL_LC_CHATBOT;
+// const supabaseKey = process.env.SUPABASE_API_KEY;
+// const client = createClient(supabaseUrl, supabaseKey);
+
+// export async function POST(req, res) {
+//     try {
+//         const { content, embeddings } = await req.json(); // Assumes req body is JSON
+
+//         // Store the document and its embeddings in the Supabase `documents` table
+//         const { error: insertError } = await client
+//             .from('documents')
+//             .insert([{ content, embedding: embeddings }]);
+
+//         if (insertError) throw insertError;
+
+//         // Retrieve matching documents
+//         const { data: matches, error: matchError } = await client.rpc('match_documents', {
+//             query_embedding: embeddings,
+//             match_threshold: 0.8,
+//             match_count: 5
+//         });
+
+//         if (matchError) throw matchError;
+
+//         // Send a JSON response with matched documents
+//         return NextResponse.json({ matches });
+//     } catch (error) {
+//         console.error('Error storing/retrieving embeddings:', error);
+//         return NextResponse.json({ error: error.message }, { status: 500 });
+//     }
+// }
 
 
 // app/api/issues/create/route.js

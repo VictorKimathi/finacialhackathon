@@ -451,29 +451,29 @@ const Sidebar = () => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Data
+              site setting
             </Typography>
-            {/* <Item
-              title="Manage Team"
-              to="/team"
+            <Item
+              title="Connect Bank"
+              to="/dashboard/scenes/bankconnect"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            /> */}
-            {/* <Item
-              title="Manage Transactions"
-              to="/transactions"
+            />
+            <Item
+              title="Fair"
+              to="/dashboard/scenes/fair"
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            /> */}
-            {/* <Item
-              title="Contacts Information"
-              to="/contacts"
+            />
+            <Item
+              title="OverPriced Shop"
+              to="/dashboard/scenes/overpriced"
               icon={<ContactsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            /> */}
+            />
             {/* <Item
               title="Debts Management"
               to="/debts"
@@ -524,6 +524,22 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              Plaid
+            </Typography>
+            <Item
+              title="FAQ Page"
+              to="/dashboard/scenes/faq"
+              icon={<HelpOutlineOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            
+
 
             <Typography
               variant="h6"
@@ -532,9 +548,10 @@ const Sidebar = () => {
             >
               Charts
             </Typography>
-            {/* <Item
+            {/* 
+            <Item
               title="Bar Chart"
-              to="/bar"
+              to="dashboard/bar"
               icon={<BarChartOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

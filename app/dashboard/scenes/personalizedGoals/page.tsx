@@ -1,19 +1,19 @@
 "use client";
-import { base_url } from "../../../../env.js"
-
-import React from 'react';
+import { base_url } from "../../../../env.js";
+import React, { useEffect, useState } from 'react';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
+import axios from "axios";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle
+  SheetTitle,
 } from "@/components/ui/sheet";
 import { useNewPersonalizedGoal } from '../../hooks/use_new_personalized';
-// import { generateFinancialGoals } from '@/app/actions/financial';
+import { useAuth } from '../../provider/auth-provider';
 
 interface Goal {
   description: string;
@@ -71,29 +71,65 @@ const GoalSection = ({ title, goals }: GoalSectionProps) => (
 
 export default function NewPersonalizedGoalSheet() {
   const { isPersonalizedGoalOpen, onPersonalizedGoalClose } = useNewPersonalizedGoal();
-  const [goals, setGoals] = React.useState<FinancialGoalsData | null>(null);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
+  const [goals, setGoals] = useState<FinancialGoalsData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { getToken } = useAuth();
 
-  React.useEffect(() => {
-    const fetchGoals = async () => {
+  useEffect(() => {
+    const fetchAllTransactions = async () => {
       try {
-        setLoading(true);
-        const userData = {
-          income: 5000,
-          expenses: 3000,
-          savings: 10000,
-          debtToIncomeRatio: 0.3,
-          creditScore: 750,
-          topExpenseCategories: ["Housing", "Food", "Transportation"]
-        };
-        
-        // Using server action
-        // const result = await generateFinancialGoals(userData);
-        // setGoals(result);
+        const response = await fetch(`${base_url}/api/transactions/`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Token ${getToken()}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch transactions");
+        }
+
+        const data = await response.json();
+        return data;
       } catch (err) {
-        setError("Failed to load financial goals");
+        setError("Failed to fetch transactions");
+        return null;
+      }
+    };
+
+    const generateFinancialGoals = async (transactions) => {
+      try {
+        const response = await axios.post(
+          `${base_url}/api/chat/send_chat/`,
+          { message: { transactions }, mode: "goal_generation" }, // Adjust message structure as needed
+          {
+            headers: {
+              "Authorization": `Token ${getToken()}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.data) {
+          setGoals(response.data); // Assuming the response data has the financial goals structure
+        } else {
+          throw new Error("Invalid AI response format");
+        }
+      } catch (err) {
+        setError("Failed to generate financial goals");
       } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchGoals = async () => {
+      setLoading(true);
+      const transactions = await fetchAllTransactions();
+      if (transactions) {
+        await generateFinancialGoals(transactions);
+      } else {
         setLoading(false);
       }
     };
@@ -101,7 +137,7 @@ export default function NewPersonalizedGoalSheet() {
     if (isPersonalizedGoalOpen) {
       fetchGoals();
     }
-  }, [isPersonalizedGoalOpen]);
+  }, [isPersonalizedGoalOpen, getToken]);
 
   return (
     <Sheet open={isPersonalizedGoalOpen} onOpenChange={onPersonalizedGoalClose}>
@@ -111,7 +147,7 @@ export default function NewPersonalizedGoalSheet() {
             AI Powered Personalized Finance Goals Advice
           </SheetTitle>
           <SheetDescription className="text-sm text-gray-500">
-            Based on your transactions we suggest these advice
+            Based on your transactions, we suggest these goals
           </SheetDescription>
         </SheetHeader>
         

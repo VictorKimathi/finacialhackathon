@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-// import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from 'next/navigation'
 import axios from "axios"
 
@@ -17,21 +16,26 @@ export default function Component() {
     username: '',
     gender: '',
     dateOfBirth: '',
-    phoneNumber: '',
+    phoneNumber: '717382028', // Set the initial phone number without the country code
     email: '',
-    occupation:'',
-    password:'',
+    occupation: '',
+    password: '',
   })
 
   const [termsAccepted, setTermsAccepted] = useState(false)
+  const [countryCode, setCountryCode] = useState('+254') // Default country code for Kenya
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSelectChange = (value: string) => {
-    setFormData(prev => ({ ...prev, gender: value }))
+  const handleSelectChange = (value: string, field: string) => {
+    if (field === 'gender') {
+      setFormData(prev => ({ ...prev, gender: value }))
+    } else if (field === 'countryCode') {
+      setCountryCode(value)
+    }
   }
 
   const handleLogin = () => {
@@ -50,10 +54,11 @@ export default function Component() {
       username: formData.username,
       password: formData.password,
       profile: {
-        phone_number: formData.phoneNumber,
+        phone_number: `${countryCode}${formData.phoneNumber}`,
         gender: formData.gender,
         occupation: formData.occupation,
-        date_of_birth:formData.dateOfBirth
+        date_of_birth: formData.dateOfBirth,
+        email: formData.email
       }
     }
 
@@ -75,7 +80,6 @@ export default function Component() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Existing input fields */}
             {/* Username */}
             <div className="space-y-2">
               <Label htmlFor="username">UserName</Label>
@@ -91,7 +95,7 @@ export default function Component() {
             {/* Gender */}
             <div className="space-y-2">
               <Label htmlFor="gender">Gender</Label>
-              <Select value={formData.gender} onValueChange={handleSelectChange}>
+              <Select value={formData.gender} onValueChange={(value) => handleSelectChange(value, 'gender')}>
                 <SelectTrigger id="gender">
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
@@ -118,15 +122,28 @@ export default function Component() {
             {/* Phone Number */}
             <div className="space-y-2">
               <Label htmlFor="phoneNumber">Phone Number</Label>
-              <Input
-                id="phoneNumber"
-                name="phoneNumber"
-                type="tel"
-                placeholder="+1 (555) 000-0000"
-                value={formData.phoneNumber}
-                onChange={handleInputChange}
-                required
-              />
+              <div className="flex">
+                <Select value={countryCode} onValueChange={(value) => handleSelectChange(value, 'countryCode')}>
+                  <SelectTrigger id="countryCode">
+                    <SelectValue placeholder="Country Code" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="+254">+254 (Kenya)</SelectItem>
+                    <SelectItem value="+1">+1 (USA)</SelectItem>
+                    <SelectItem value="+44">+44 (UK)</SelectItem>
+                    {/* Add other country codes as needed */}
+                  </SelectContent>
+                </Select>
+                <Input
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  type="tel"
+                  placeholder="717382028"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
             </div>
             {/* Password */}
             <div className="space-y-2">
@@ -166,7 +183,6 @@ export default function Component() {
                 required
               />
             </div>
-
             {/* Terms and Conditions */}
             <div className="space-y-2">
               <Label>
@@ -177,9 +193,7 @@ export default function Component() {
                   className="mr-2"
                 />
                 I have read and agree to the{" "}
-                <a href="https://onedrive.live.com/personal/25a1bba9e864bcf3/_layouts/15/Doc.aspx?sourcedoc=%7B6604cad9-f721-4611-9c30-77f4fe7a07f8%7D&action=default&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3cvYy8yNWExYmJhOWU4NjRiY2YzL0VkbktCR1loOXhGR25EQjM5UDU2Ql9nQi1YLWJkSDNNT2I2a3E0OENSQ3ItblE&slrid=6c1c63a1-2001-a000-58c0-f3f68f442863&originalPath=aHR0cHM6Ly8xZHJ2Lm1zL3cvYy8yNWExYmJhOWU4NjRiY2YzL0VkbktCR1loOXhGR25EQjM5UDU2Ql9nQi1YLWJkSDNNT2I2a3E0OENSQ3ItblE_cnRpbWU9RGF2R1lfZ0MzVWc&CID=4ca6c882-e657-43aa-b9e7-6082d3ffd882&_SRM=0:G:35"
-                   target="_blank" rel="noopener noreferrer" className="text-blue-600 underline"
-                >
+                <a href="https://onedrive.live.com/terms" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
                   terms and conditions
                 </a>.
               </Label>

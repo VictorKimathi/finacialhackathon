@@ -70,22 +70,7 @@ const page = () => {
 
             Add Debt
           </Button>
-          <Button
-            onClick={onSavingOpen}
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-              margin: "10px"
 
-            }}
-          >
-            {/* <DownloadOutlinedIcon sx={{ mr: "10px" }} /> */}
-            < AddIcon sx={{ mr: "10px" }}/>
-            Add Saving
-          </Button>
           <Button
             onClick={onGoalOpen}
             sx={{
