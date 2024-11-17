@@ -46,7 +46,7 @@ const Dashboard = () => {
   //         });
   //         console.log('Response:', response.data);
   //     } catch (error) {
-  //         console.error('Test embedding error:', error);
+  //         console.log('Test embedding error:', error);
   //     }
   // }
   

@@ -25,7 +25,7 @@ const formSchema = z.object({
     category: z.string().nullable().refine(val => val !== null, "Category is required"),
     amount: z.number().positive("Amount must be positive").min(0.01, "Minimum amount is 0.01"),
     description: z.string().optional(),
-    account_number: z.string().nonempty("Account number is required"),
+    // account_number: z.string().nonempty("Account number is required"),
 });
 
 const INCOME_CATEGORIES = [
@@ -62,8 +62,53 @@ const TransactionForm = ({ onSubmit, disabled }) => {
 
     const [categoryOptions, setCategoryOptions] = useState(INCOME_CATEGORIES);
 
+
+    
+        // const getAccounts = async () => {
+        //   try {
+        //     const response = await axios.post(
+        //       `${base_url}/api/accounts/`,
+        //       {},
+        //       {
+        //         headers: {
+        //           Authorization: `Token ${getToken()}`,
+        //           "Content-Type": "application/json",
+        //         },
+        //       }
+        //     );
+        //     console.log(response.data);
+        //   } catch (error) {
+        //     console.log("Error fetching accounts:", error);
+        //   }
+        // };
+    
+     // Call the async function
+
+    
+
+
     // Update category options based on selected transaction type
     useEffect(() => {
+        const getAccounts = async () => {
+            try {
+              const response = await axios.get(
+                `${base_url}/api/accounts/`,
+          
+                {
+                  headers: {
+                    Authorization: `Token ${getToken()}`,
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+              console.log("ACCOUNTS TRANSACT",response.data.length);
+            } catch (error) {
+              console.log("Error fetching accounts:", error);
+            }
+          };
+
+          getAccounts()
+
         const transactionType = form.watch("transaction_type");
         setCategoryOptions(transactionType === 'Income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES);
         form.setValue("category", null); // Reset category whenever transaction type changes
@@ -74,35 +119,55 @@ const TransactionForm = ({ onSubmit, disabled }) => {
         try {
             // Concatenate transaction details into a single string
             const transactionString = `${data.transaction_type} ${data.category} ${data.amount} ${data.description || ''}`;
-
+    
             // Generate a dummy embedding array
             const embeddingArray = Array(1536).fill(Math.random()); // Replace this with actual embeddings if available
-
             // Prepare data for submission
             const formattedData = {
-                account_number: data.account_number.toString(),
-                amount: parseFloat(data.amount),
+                account:1,
+                // account_id:22,
+                amount: parseFloat(data.amount).toFixed(2),
                 transaction_type: data.transaction_type.toLowerCase(),
                 category: data.category.toLowerCase(),
                 description: data.description || '',
-                transaction_string: transactionString,
-                embeddings: embeddingArray,
+                
             };
-
+            console.log(formattedData)
+    
             console.log("Transaction Data with Embedding:", formattedData);
-
-            // Send data to your API
+    
+            // Send data to the first API (transactions API)
+            const responseTransaction = await fetch(`${base_url}/api/transactions/`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Token ${getToken()}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formattedData), // Ensure you're passing the data as the body
+            });
+    
+            if (!responseTransaction.ok) {
+                throw new Error("Failed to save transaction");
+            }
+    
+            const transactionData = await responseTransaction.json();
+            console.log("Transaction saved successfully:", transactionData);
+    
+            // Send data to the second API (dummy test API)
             const response = await axios.post('/api/test/', {
                 content: formattedData,
-                embeddings: Array(1536).fill(Math.random()),  // Dummy embedding array
+                embeddings: embeddingArray, // Dummy embedding array
             });
+    
             console.log("Transaction saved with embedding:", response.data);
+    
+            // Invoke the onSubmit callback with the formatted data
             onSubmit(formattedData);
         } catch (error) {
-            console.error("Error saving transaction:", error);
+            console.log("Error saving transaction:", error);
         }
     };
-
+    
     return (
         <Form {...form}>
             <form className="space-y-4 text-gray-800 pt-4" onSubmit={form.handleSubmit(handleFormSubmit)}>
@@ -176,7 +241,7 @@ const TransactionForm = ({ onSubmit, disabled }) => {
                 )} />
 
                 {/* Account Number Field */}
-                <FormField name="account_number" control={form.control} render={({ field }) => (
+                {/* <FormField name="account_number" control={form.control} render={({ field }) => (
                     <FormItem>
                         <FormLabel>Account Number</FormLabel>
                         <FormControl>
@@ -189,7 +254,7 @@ const TransactionForm = ({ onSubmit, disabled }) => {
                         </FormControl>
                         <FormMessage />
                     </FormItem>
-                )} />
+                )} /> */}
 
                 {/* Submit Button */}
                 <Button 

@@ -35,10 +35,10 @@ export default function Home() {
       if (res.ok) {
         console.log(data.message);
       } else {
-        console.error('Error sending email:', data.error);
+        console.log('Error sending email:', data.error);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.log('Error:', error);
     }
 
     setReminder('');

@@ -887,47 +887,47 @@ function validateModifiers(modifiers) {
       switch (key) {
         case 'name':
           if (typeof modifier.name !== 'string') {
-            console.error(format(INVALID_MODIFIER_ERROR, String(modifier.name), '"name"', '"string"', "\"" + String(modifier.name) + "\""));
+            console.log(format(INVALID_MODIFIER_ERROR, String(modifier.name), '"name"', '"string"', "\"" + String(modifier.name) + "\""));
           }
 
           break;
 
         case 'enabled':
           if (typeof modifier.enabled !== 'boolean') {
-            console.error(format(INVALID_MODIFIER_ERROR, modifier.name, '"enabled"', '"boolean"', "\"" + String(modifier.enabled) + "\""));
+            console.log(format(INVALID_MODIFIER_ERROR, modifier.name, '"enabled"', '"boolean"', "\"" + String(modifier.enabled) + "\""));
           }
 
         case 'phase':
           if (modifierPhases.indexOf(modifier.phase) < 0) {
-            console.error(format(INVALID_MODIFIER_ERROR, modifier.name, '"phase"', "either " + modifierPhases.join(', '), "\"" + String(modifier.phase) + "\""));
+            console.log(format(INVALID_MODIFIER_ERROR, modifier.name, '"phase"', "either " + modifierPhases.join(', '), "\"" + String(modifier.phase) + "\""));
           }
 
           break;
 
         case 'fn':
           if (typeof modifier.fn !== 'function') {
-            console.error(format(INVALID_MODIFIER_ERROR, modifier.name, '"fn"', '"function"', "\"" + String(modifier.fn) + "\""));
+            console.log(format(INVALID_MODIFIER_ERROR, modifier.name, '"fn"', '"function"', "\"" + String(modifier.fn) + "\""));
           }
 
           break;
 
         case 'effect':
           if (typeof modifier.effect !== 'function') {
-            console.error(format(INVALID_MODIFIER_ERROR, modifier.name, '"effect"', '"function"', "\"" + String(modifier.fn) + "\""));
+            console.log(format(INVALID_MODIFIER_ERROR, modifier.name, '"effect"', '"function"', "\"" + String(modifier.fn) + "\""));
           }
 
           break;
 
         case 'requires':
           if (!Array.isArray(modifier.requires)) {
-            console.error(format(INVALID_MODIFIER_ERROR, modifier.name, '"requires"', '"array"', "\"" + String(modifier.requires) + "\""));
+            console.log(format(INVALID_MODIFIER_ERROR, modifier.name, '"requires"', '"array"', "\"" + String(modifier.requires) + "\""));
           }
 
           break;
 
         case 'requiresIfExists':
           if (!Array.isArray(modifier.requiresIfExists)) {
-            console.error(format(INVALID_MODIFIER_ERROR, modifier.name, '"requiresIfExists"', '"array"', "\"" + String(modifier.requiresIfExists) + "\""));
+            console.log(format(INVALID_MODIFIER_ERROR, modifier.name, '"requiresIfExists"', '"array"', "\"" + String(modifier.requiresIfExists) + "\""));
           }
 
           break;
@@ -937,7 +937,7 @@ function validateModifiers(modifiers) {
           break;
 
         default:
-          console.error("PopperJS: an invalid property has been provided to the \"" + modifier.name + "\" modifier, valid properties are " + VALID_PROPERTIES.map(function (s) {
+          console.log("PopperJS: an invalid property has been provided to the \"" + modifier.name + "\" modifier, valid properties are " + VALID_PROPERTIES.map(function (s) {
             return "\"" + s + "\"";
           }).join(', ') + "; but \"" + key + "\" was provided.");
       }
@@ -946,7 +946,7 @@ function validateModifiers(modifiers) {
         if (modifiers.find(function (mod) {
           return mod.name === requirement;
         }) == null) {
-          console.error(format(MISSING_DEPENDENCY_ERROR, String(modifier.name), requirement, requirement));
+          console.log(format(MISSING_DEPENDENCY_ERROR, String(modifier.name), requirement, requirement));
         }
       });
     });
@@ -1361,7 +1361,7 @@ function popperGenerator(generatorOptions) {
             });
 
             if (!flipModifier) {
-              console.error(['Popper: "auto" placements require the "flip" modifier be', 'present and enabled to work.'].join(' '));
+              console.log(['Popper: "auto" placements require the "flip" modifier be', 'present and enabled to work.'].join(' '));
             }
           }
 
@@ -1400,7 +1400,7 @@ function popperGenerator(generatorOptions) {
 
         if (!areValidElements(reference, popper)) {
           if (process.env.NODE_ENV !== "production") {
-            console.error(INVALID_ELEMENT_ERROR);
+            console.log(INVALID_ELEMENT_ERROR);
           }
 
           return;
@@ -1432,7 +1432,7 @@ function popperGenerator(generatorOptions) {
             __debug_loops__ += 1;
 
             if (__debug_loops__ > 100) {
-              console.error(INFINITE_LOOP_ERROR);
+              console.log(INFINITE_LOOP_ERROR);
               break;
             }
           }
@@ -1475,7 +1475,7 @@ function popperGenerator(generatorOptions) {
 
     if (!areValidElements(reference, popper)) {
       if (process.env.NODE_ENV !== "production") {
-        console.error(INVALID_ELEMENT_ERROR);
+        console.log(INVALID_ELEMENT_ERROR);
       }
 
       return instance;
@@ -1916,7 +1916,7 @@ function computeAutoPlacement(state, options) {
     allowedPlacements = placements$1;
 
     if (process.env.NODE_ENV !== "production") {
-      console.error(['Popper: The `allowedAutoPlacements` option did not allow any', 'placements. Ensure the `placement` option matches the variation', 'of the allowed placements.', 'For example, "auto" cannot be used to allow "bottom-start".', 'Use "auto-start" instead.'].join(' '));
+      console.log(['Popper: The `allowedAutoPlacements` option did not allow any', 'placements. Ensure the `placement` option matches the variation', 'of the allowed placements.', 'For example, "auto" cannot be used to allow "bottom-start".', 'Use "auto-start" instead.'].join(' '));
     }
   } // $FlowFixMe: Flow seems to have problems with two array unions...
 
@@ -2252,13 +2252,13 @@ function effect$2(_ref2) {
 
   if (process.env.NODE_ENV !== "production") {
     if (!isHTMLElement(arrowElement)) {
-      console.error(['Popper: "arrow" element must be an HTMLElement (not an SVGElement).', 'To use an SVG arrow, wrap it in an HTMLElement that will be used as', 'the arrow.'].join(' '));
+      console.log(['Popper: "arrow" element must be an HTMLElement (not an SVGElement).', 'To use an SVG arrow, wrap it in an HTMLElement that will be used as', 'the arrow.'].join(' '));
     }
   }
 
   if (!contains(state.elements.popper, arrowElement)) {
     if (process.env.NODE_ENV !== "production") {
-      console.error(['Popper: "arrow" modifier\'s `element` must be a child of the popper', 'element.'].join(' '));
+      console.log(['Popper: "arrow" modifier\'s `element` must be a child of the popper', 'element.'].join(' '));
     }
 
     return;

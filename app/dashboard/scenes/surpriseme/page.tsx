@@ -53,7 +53,7 @@ const Chat = () => {
         { role: 'assistant', content: assistantReply },
       ]);
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.log("Error sending message:", error);
       setMessages([
         { role: 'user', content: "Surprise me with some fun financial insights!" },
         { role: 'assistant', content: "Oops! Something went wrong. Please try again later." },

@@ -15,7 +15,7 @@ const fetchData = async (url, setState, transformData) => {
     const data = await response.json();
     setState(transformData(data));
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.log('Error fetching data:', error);
   }
 };
 

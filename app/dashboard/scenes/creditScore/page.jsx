@@ -31,7 +31,7 @@ const CreditScore = () => {
       const data = await response.json();
       setter(data);
     } catch (error) {
-      console.error(`${errorMsg}:`, error.message);
+      console.log(`${errorMsg}:`, error.message);
     }
   };
 
@@ -88,7 +88,7 @@ const CreditScore = () => {
         throw new Error("AI response did not contain a valid score.");
       }
     } catch (error) {
-      console.error("Error generating notifications or fetching credit score:", error.response || error.message);
+      console.log("Error generating notifications or fetching credit score:", error.response || error.message);
     }
   };
 

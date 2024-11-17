@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Trash } from 'lucide-react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,9 +20,9 @@ import { useAuth } from '../../provider/auth-provider';
 
 // Validation schema
 const formSchema = z.object({
-    account_number: z.string()
-        .min(1, "Account number is required")
-        .max(20, "Account number cannot exceed 20 characters"),
+    // account: z.string()
+    //     .min(1, "Account  is required")
+    //     .max(20, "Account cannot exceed 20 characters"),
     account_type: z.enum(["bank", "mpesa", "cash", "other"], "Select a valid account type"),
     bank_name: z.enum(["kcb", "equity", "family", "worldbank"]).optional(),
     amount: z.string()
@@ -53,6 +53,8 @@ const BANKS = [
     { value: 'worldbank', label: 'World Bank' },
 ];
 
+
+
 // Function to handle API call
 const saveAccountToServer = async (data: FormValues, getToken: () => string) => {
     console.log("Data to send to server:", data); // Log the form data
@@ -73,7 +75,7 @@ const saveAccountToServer = async (data: FormValues, getToken: () => string) => 
         );
         console.log("Bank saved:", response.data);
     } catch (error) {
-        console.error("Error saving bank:", error.response || error); // Log detailed error response
+        console.log("Error saving bank:", error.response || error); // Log detailed error response
     }
 };
 
@@ -85,6 +87,10 @@ const AccountForm = ({
     disabled
 }: Props) => {
     const { getToken } = useAuth();
+
+
+
+
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -98,7 +104,7 @@ const AccountForm = ({
             await saveAccountToServer(values, getToken); // Save account to server
             onSubmit(values); // Trigger onSubmit callback
         } catch (error) {
-            console.error("Error during form submission:", error);
+            console.log("Error during form submission:", error);
         }
     };
 
@@ -117,20 +123,20 @@ const AccountForm = ({
         <Form {...form}>
             <form className="space-y-4 pt-4" onSubmit={form.handleSubmit(handleSubmit)}>
                 {/* Account Number Field */}
-                <FormField name="account_number" control={form.control} render={({ field }) => (
+                {/* <FormField name="account" control={form.control} render={({ field }) => (
                     <FormItem>
                         <FormLabel className="text-black">Account Number</FormLabel>
                         <FormControl>
                             <Input
                                 disabled={disabled}
-                                placeholder="Enter account number"
+                                placeholder="Enter account "
                                 className="text-black"
                                 {...field}
                             />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
-                )} />
+                )} /> */}
 
                 {/* Account Type Field */}
                 <FormField name="account_type" control={form.control} render={({ field }) => (

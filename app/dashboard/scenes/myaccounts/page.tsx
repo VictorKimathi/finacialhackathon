@@ -20,7 +20,7 @@ import AccountForm from '../addAccount/page';
         <SheetContent className="space-y-6 p-6 rounded-lg bg-white  shadow-lg border border-gray-200">
             <SheetHeader className="border-b pb-4">
             <SheetTitle className="text-xl font-bold text-gray-800">
-                New Account
+                New Account Creation
             </SheetTitle>
             <SheetDescription className="text-sm text-gray-500">
                 Create a new account to track your transaction

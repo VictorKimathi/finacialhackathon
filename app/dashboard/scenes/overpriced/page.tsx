@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ShoppingCart, CreditCard, AlertTriangle } from 'lucide-react'
+import { ShoppingCart, CreditCard, AlertTriangle, CheckCircle } from 'lucide-react'
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 
 type Product = {
   id: number
@@ -30,7 +31,8 @@ export default function OverpricedShop() {
   const [cart, setCart] = useState<Product[]>([])
   const [showCheckout, setShowCheckout] = useState(false)
   const [cardDetails, setCardDetails] = useState({ number: '', expiry: '', cvc: '' })
-  const [transactionSuccess, setTransactionSuccess] = useState(false)
+  const [showFraudAlert, setShowFraudAlert] = useState(false)
+  const [transactionComplete, setTransactionComplete] = useState(false)
 
   const addToCart = (product: Product) => {
     setCart([...cart, product])
@@ -54,10 +56,12 @@ export default function OverpricedShop() {
 
   const handleCheckout = (e: React.FormEvent) => {
     e.preventDefault()
-    // Simulate payment processing
+    // Simulate transaction processing
+    setTransactionComplete(true)
+    // Simulate delay before fraud detection
     setTimeout(() => {
-      setTransactionSuccess(true)
-    }, 1500)
+      setShowFraudAlert(true)
+    }, 2000)
   }
 
   return (
@@ -65,7 +69,7 @@ export default function OverpricedShop() {
       <ToastContainer />
       <h1 className="text-3xl font-bold mb-6 text-red-800">EXCLUSIVE LUXURY EMPORIUM</h1>
       
-      {!showCheckout && (
+      {!showCheckout && !transactionComplete && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="border-2 border-red-300">
             <CardHeader>
@@ -113,7 +117,7 @@ export default function OverpricedShop() {
         </div>
       )}
 
-      {showCheckout && !transactionSuccess && (
+      {showCheckout && !transactionComplete && (
         <Card className="max-w-md mx-auto border-2 border-red-300">
           <CardHeader>
             <CardTitle className="text-red-800">EXCLUSIVE CHECKOUT</CardTitle>
@@ -166,30 +170,56 @@ export default function OverpricedShop() {
         </Card>
       )}
 
-      {transactionSuccess && (
-        <Card className="max-w-md mx-auto border-2 border-red-300">
+      {transactionComplete && !showFraudAlert && (
+        <Card className="max-w-md mx-auto border-2 border-green-300">
           <CardHeader>
-            <CardTitle className="text-red-800">ELITE TRANSACTION COMPLETE</CardTitle>
+            <CardTitle className="text-green-800">TRANSACTION COMPLETE</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col items-center justify-center">
-              <AlertTriangle className="text-red-500 w-16 h-16 mb-4" />
-              <p className="text-center text-red-800">
-                Congratulations! Your exclusive payment of ${getTotalPrice()} has been processed. You are now part of the elite! (No refunds)
+              <CheckCircle className="text-green-500 w-16 h-16 mb-4" />
+              <p className="text-center text-green-800 text-lg">
+                Congratulations! Your exclusive payment of ${getTotalPrice()} has been processed. You are now part of the elite!
               </p>
             </div>
           </CardContent>
-          <CardFooter>
-            <Button onClick={() => {
-              setShowCheckout(false)
-              setTransactionSuccess(false)
-              setCart([])
-            }} className="w-full bg-red-600 hover:bg-red-700">
-              Return to Luxury Shop
-            </Button>
-          </CardFooter>
         </Card>
       )}
+
+      <Dialog open={showFraudAlert} onOpenChange={setShowFraudAlert}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-red-600 flex items-center">
+              <AlertTriangle className="w-6 h-6 mr-2" />
+              Fraud Alert
+            </DialogTitle>
+          </DialogHeader>
+          <DialogDescription className="text-lg">
+            FinanceAI has detected potentially fraudulent activity on your account.
+          </DialogDescription>
+          <div className="py-4">
+            <p className="text-lg font-semibold">Suspicious Transaction Details:</p>
+            <p>Amount: ${getTotalPrice()}</p>
+            <p>Merchant: EXCLUSIVE LUXURY EMPORIUM</p>
+            <p>Date: {new Date().toLocaleString()}</p>
+          </div>
+          <DialogFooter className="sm:justify-start">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => {
+                setShowFraudAlert(false)
+                setTransactionComplete(false)
+                setShowCheckout(false)
+                setCart([])
+              }}
+              className="w-full sm:w-auto"
+            >
+              Acknowledge and Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

@@ -61,7 +61,7 @@ export default function FinancialGoalForm() {
         goal_type: '',
       });
     } catch (error) {
-      console.error('Error creating financial goal:', error.response ? error.response.data : error.message);
+      console.log('Error creating financial goal:', error.response ? error.response.data : error.message);
     }
   };
 

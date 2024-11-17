@@ -9,7 +9,7 @@ export async function POST(req) {
 
     // Ensure email and reminder are present
     if (!email || !reminder || !reminderDate) {
-      console.error('Missing required fields in request:', { email, reminder, reminderDate });
+      console.log('Missing required fields in request:', { email, reminder, reminderDate });
       return NextResponse.json(
         { error: 'Missing required fields: email, reminder, or reminderDate.' },
         { status: 400 }
@@ -53,7 +53,7 @@ export async function POST(req) {
     );
   } catch (error) {
     // Log detailed error for debugging
-    console.error('Error sending email:', error);
+    console.log('Error sending email:', error);
 
     // Capture and return the error response with details
     return NextResponse.json(
@@ -99,7 +99,7 @@ export async function POST(req) {
 //         // Send a JSON response with matched documents
 //         return NextResponse.json({ matches });
 //     } catch (error) {
-//         console.error('Error storing/retrieving embeddings:', error);
+//         console.log('Error storing/retrieving embeddings:', error);
 //         return NextResponse.json({ error: error.message }, { status: 500 });
 //     }
 // }
@@ -131,7 +131,7 @@ export async function POST(req) {
 //         const result = await embeddingModel.embedContent(text);
 //         return result.embedding.values;
 //     } catch (err) {
-//         console.error("Error generating embedding:", err);
+//         console.log("Error generating embedding:", err);
 //         return null;
 //     }
 // }
@@ -143,7 +143,7 @@ export async function POST(req) {
 //     });
 
 //     if (error) {
-//         console.error("Error retrieving matches:", error);
+//         console.log("Error retrieving matches:", error);
 //         return "";
 //     }
 //     return data.map(chunk => chunk.content).join(" ");
@@ -197,7 +197,7 @@ export async function POST(req) {
 //         return NextResponse.json({ senderId, answer }, { status: 200 });
 
 //     } catch (error) {
-//         console.error("Error processing issue:", error.message);
+//         console.log("Error processing issue:", error.message);
 //         return NextResponse.json({ error: 'An error occurred while processing the issue.' }, { status: 500 });
 //     }
 // }
@@ -236,7 +236,7 @@ export async function POST(req) {
 
 //             res.status(200).json({ matches });
 //         } catch (error) {
-//             console.error('Error storing/retrieving embeddings:', error);
+//             console.log('Error storing/retrieving embeddings:', error);
 //             res.status(500).json({ error: error.message });
 //         }
 //     } else {

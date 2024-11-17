@@ -1,3 +1,5 @@
+"use client"
+
 // pages/total-debt.js
 import { useState, useEffect } from 'react';
 

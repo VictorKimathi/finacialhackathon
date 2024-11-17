@@ -66,7 +66,7 @@ export default function SavingsForm() {
         description: '',
       });
     } catch (error) {
-      console.error('Error creating savings goal:', error.response ? error.response.data : error.message);
+      console.log('Error creating savings goal:', error.response ? error.response.data : error.message);
     }
   };
 

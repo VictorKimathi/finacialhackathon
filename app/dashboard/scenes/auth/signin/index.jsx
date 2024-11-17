@@ -35,7 +35,7 @@ const Page = () => {
             console.log('Token received:', response.data.token);
             router.push('/dashboard');
         } catch (error) {
-            console.error('Error during login:', error.response ? error.response.data : error.message);
+            console.log('Error during login:', error.response ? error.response.data : error.message);
         }
     };
 

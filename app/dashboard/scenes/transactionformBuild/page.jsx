@@ -46,7 +46,7 @@ const FinancialInputPage = () => {
       );
       console.log("Transaction saved:", response.data);
     } catch (error) {
-      console.error("Error saving transaction:", error);
+      console.log("Error saving transaction:", error);
     }
   };
 
@@ -71,7 +71,7 @@ const FinancialInputPage = () => {
       );
       console.log("Debt saved:", response.data);
     } catch (error) {
-      console.error("Error saving debt:", error);
+      console.log("Error saving debt:", error);
     }
   };
 
@@ -97,7 +97,7 @@ const FinancialInputPage = () => {
       );
       console.log("Bank saved:", response.data);
     } catch (error) {
-      console.error("Error saving bank:", error);
+      console.log("Error saving bank:", error);
     }
   };
 
@@ -111,7 +111,7 @@ const FinancialInputPage = () => {
 
       alert("Financial data saved!");
     } catch (error) {
-      console.error("Error saving financial data:", error);
+      console.log("Error saving financial data:", error);
       alert("An error occurred while saving your data.");
     }
   };

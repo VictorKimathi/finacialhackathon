@@ -35,7 +35,7 @@ export default function LoginComponent() {
       console.log("Token setting",localStorage.getItem('token'));
       router.replace('/preference/account/'); 
     } catch (error) {
-      console.error('Error during registration:', error.response ? error.response.data : error.message);
+      console.log('Error during registration:', error.response ? error.response.data : error.message);
     }
   }
 

@@ -1,4 +1,6 @@
+"use client"
 // pages/financial-goals.js
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../provider/auth-provider';
 import { base_url } from "../../../../env"

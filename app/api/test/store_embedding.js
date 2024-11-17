@@ -29,7 +29,7 @@ export default async function handler(req, res) {
 
             res.status(200).json({ matches });
         } catch (error) {
-            console.error('Error storing/retrieving embeddings:', error);
+            console.log('Error storing/retrieving embeddings:', error);
             res.status(500).json({ error: error.message });
         }
     } else {

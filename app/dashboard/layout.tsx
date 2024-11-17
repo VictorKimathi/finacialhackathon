@@ -34,7 +34,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         {/* <AuthProvider> */}
 
         <Box
-          backgroundColor={colors.primary[600]}
+          backgroundColor={colors.primary[400]}
           display="flex"
 
         >

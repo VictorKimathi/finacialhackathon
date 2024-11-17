@@ -1,5 +1,4 @@
 "use client";
-import { useAuth } from '../../provider/auth-provider';
 
 import React, { useState, useEffect } from 'react';
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -30,8 +29,6 @@ interface InvestmentRecommendations {
 }
 
 export default function NewInvestmentSheet() {
-  const { getToken } = useAuth();  // Getting token from the auth provider
-
   const { isInvestmentOpen, onInvestmentClose } = useNewInvestment();
   const [recommendations, setRecommendations] = useState<InvestmentRecommendations | null>(null);
   const [loading, setLoading] = useState(true);
@@ -41,6 +38,10 @@ export default function NewInvestmentSheet() {
   const [newMessage, setNewMessage] = useState<string>('');
   const [chatMode, setChatMode] = useState<string>('investment'); // Define mode for investment
 
+  const getToken = () => {
+    // Function to get the token (this depends on your authentication setup)
+    return 'your_token';
+  };
 
   useEffect(() => {
     const fetchTotalDebt = async () => {
@@ -183,7 +184,7 @@ export default function NewInvestmentSheet() {
           setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: assistantReply }]);
           setNewMessage(''); // Clear the message after sending
         } catch (error) {
-          console.error("Error sending message to AI:", error);
+          console.log("Error sending message to AI:", error);
         }
       };
 

@@ -59,7 +59,7 @@ const Register = () => {
             console.log('Registration successful:', response.data);
             router.replace('/auth/login');
         } catch (error) {
-            console.error('Error during registration:', error.response ? error.response.data : error.message);
+            console.log('Error during registration:', error.response ? error.response.data : error.message);
         }
     };
 

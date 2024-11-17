@@ -62,7 +62,7 @@ const Notifications = () => {
         console.log("Notifications data from AI:", response);
 
       } catch (error) {
-        console.error("Error generating notifications:", error);
+        console.log("Error generating notifications:", error);
         setNotifications(["There was an error fetching notifications. Please try again later."]);
       } finally {
         setLoading(false);

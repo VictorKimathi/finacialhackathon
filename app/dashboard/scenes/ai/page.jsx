@@ -39,7 +39,7 @@ const Chat = () => {
       };
 
       recognition.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
+        console.log("Speech recognition error:", event.error);
         setIsListening(false);
       };
     }
@@ -79,7 +79,7 @@ const Chat = () => {
       setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: assistantReply }]);
       setNewMessage('');
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.log("Error sending message:", error);
       setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: "Error: Unable to get a response from the server." }]);
     } finally {
       setIsLoading(false);

@@ -30,7 +30,7 @@ const Profile = () => {
                 setUser(response.data); // Set the user data in state
                 setLoading(false); // Stop loading
             } catch (error) {
-                console.error('Error fetching user profile:', error);
+                console.log('Error fetching user profile:', error);
                 setError('Error loading user profile. Please try again later.');
                 setLoading(false); // Stop loading in case of error
             }

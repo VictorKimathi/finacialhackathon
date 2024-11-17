@@ -22,9 +22,9 @@ import { useRouter } from 'next/navigation';
 
 // Validation schema
 const formSchema = z.object({
-    account_number: z.string()
-        .min(1, 'Account number is required')
-        .max(20, 'Account number cannot exceed 20 characters'),
+    // account_number: z.string()
+    //     .min(1, 'Account number is required')
+    //     .max(20, 'Account number cannot exceed 20 characters'),
     account_type: z.enum(['bank', 'mpesa', 'cash', 'other'], 'Select a valid account type'),
     bank_name: z.enum(['kcb', 'equity', 'family', 'worldbank']).optional(),
     amount: z.string(),
@@ -64,7 +64,7 @@ const checkIfUserHasMultipleAccounts = async (getToken) => {
         });
         return response.data && response.data.length > 1;
     } catch (error) {
-        console.error('Error fetching user accounts:', error);
+        console.log('Error fetching user accounts:', error);
         return false;
     }
 };
@@ -86,7 +86,7 @@ const saveAccountToServer = async (data: FormValues, getToken: () => string) => 
     try {
         await axios.post(
             'http://localhost:8000/api/accounts/',
-            { user: 2, ...data },
+            {  ...data },
             {
                 headers: {
                     Authorization: `Token ${getToken()}`,
@@ -96,7 +96,7 @@ const saveAccountToServer = async (data: FormValues, getToken: () => string) => 
         );
         toast.success('Account saved successfully!');
     } catch (error) {
-        console.error('Error saving account:', error.response || error);
+        console.log('Error saving account:', error.response || error);
         toast.error('Failed to save account. Please try again.');
     }
 };
@@ -121,7 +121,7 @@ const AccountForm = ({
             await saveAccountToServer(values, getToken);
             onSubmit(values);
         } catch (error) {
-            console.error('Error during form submission:', error);
+            console.log('Error during form submission:', error);
         }
     };
 
@@ -139,7 +139,7 @@ const AccountForm = ({
         <Form {...form}>
             <ToastContainer />
             <form className="space-y-4 pt-4" onSubmit={form.handleSubmit(handleSubmit)}>
-                <FormField name="account_number" control={form.control} render={({ field }) => (
+                {/* <FormField name="account_number" control={form.control} render={({ field }) => (
                     <FormItem>
                         <FormLabel className="text-black">Account Number</FormLabel>
                         <FormControl>
@@ -152,7 +152,7 @@ const AccountForm = ({
                         </FormControl>
                         <FormMessage />
                     </FormItem>
-                )} />
+                )} /> */}
 
                 <FormField name="account_type" control={form.control} render={({ field }) => (
                     <FormItem>

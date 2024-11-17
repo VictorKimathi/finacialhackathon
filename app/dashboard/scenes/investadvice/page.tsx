@@ -13,7 +13,7 @@ const fetchData = async (url, setState, transformData = data => data) => {
     const data = await response.json();
     setState(transformData(data));
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.log('Error fetching data:', error);
   }
 };
 
@@ -55,7 +55,7 @@ const fetchUserData = async (endpoint, setState, getToken) => {
     const data = await response.json();
     setState(data);
   } catch (error) {
-    console.error('Error fetching user data:', error);
+    console.log('Error fetching user data:', error);
   }
 };
 

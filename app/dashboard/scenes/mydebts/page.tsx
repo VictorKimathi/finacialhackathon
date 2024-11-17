@@ -48,7 +48,7 @@ const DebtForm = () => {
       console.log("Debt saved:", response.data);
       return true;
     } catch (error) {
-      console.error("Error saving debt:", error);
+      console.log("Error saving debt:", error);
       return false;
     }
   };

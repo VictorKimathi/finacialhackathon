@@ -58,7 +58,7 @@ const Fraud = () => {
 
       setAllTransactions(updatedTransactions);
     } catch (err) {
-      console.error('Error sending transactions to AI:', err);
+      console.log('Error sending transactions to AI:', err);
     }
   };
 
