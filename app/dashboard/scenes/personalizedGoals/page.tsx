@@ -140,7 +140,7 @@ export default function NewPersonalizedGoalSheet() {
           },
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzE2OTBlZTc2MDA3NzEwMDI3ODk4ZjQiLCJpYXQiOjE3MzE2NzAwNjUsImV4cCI6MTczMTc1NjQ2NX0.OEILTpSM7sGZQWBHQJIw52zQke5Bh9aUpcAae1F7JzA`, // Use env variable
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzE2OTBlZTc2MDA3NzEwMDI3ODk4ZjQiLCJpYXQiOjE3MzE4NDY5NDIsImV4cCI6MTczMTkzMzM0Mn0.GcfkwnGVfvxhmgBWt-rZjOp_xiu7KQ2F3H_4W8pQons`, // Use env variable
               "Content-Type": "application/json",
             },
           }
