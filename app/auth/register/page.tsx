@@ -67,7 +67,15 @@ export default function Component() {
       console.log('Registration successful:', response.data)
       router.push('/auth/login')
     } catch (error) {
-      console.log('Error during registration:', error.response ? error.response.data : error.message)
+
+      if (axios.isAxiosError(error)) {
+        console.log('Error during registration:', error.response ? error.response.data : error.message);
+    } else if (error instanceof Error) {
+        console.log('Error during registration:', error.message);
+    } else {
+        console.log('Unexpected error:', error);
+    }
+    
     }
   }
 

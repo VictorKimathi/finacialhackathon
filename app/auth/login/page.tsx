@@ -35,7 +35,13 @@ export default function LoginComponent() {
       console.log("Token setting",localStorage.getItem('token'));
       router.replace('/preference/account/'); 
     } catch (error) {
-      console.log('Error during registration:', error.response ? error.response.data : error.message);
+      if (axios.isAxiosError(error)) {
+        console.log('Error during registration:', error.response ? error.response.data : error.message);
+    } else if (error instanceof Error) {
+        console.log('Error during registration:', error.message);
+    } else {
+        console.log('Unexpected error:', error);
+    }
     }
   }
 

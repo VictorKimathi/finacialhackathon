@@ -1,0 +1,140 @@
+/home/victor/Documents/secondyear/projects/financenext/finacialhackathon/app/dashboard/scenes/
+├── addAccount
+│   └── page.tsx
+├── addDebt
+│   └── page.tsx
+├── addgoal
+│   └── page.tsx
+├── addSavings
+│   └── page.tsx
+├── addTransaction
+│   └── page.tsx
+├── ai
+│   ├── page.jsx
+│   └── thinking.css
+├── anomally
+│   └── page.tsx
+├── auth
+│   ├── signin
+│   │   ├── index.jsx
+│   │   └── styles.css
+│   └── signup
+│       ├── index.jsx
+│       └── Register.module.css
+├── bankconnect
+│   └── page.tsx
+├── bar
+│   └── index.jsx
+├── budget
+│   └── page.tsx
+├── calendar
+│   └── page.jsx
+├── contacts
+│   └── index.jsx
+├── creditScore
+│   └── page.jsx
+├── dashboard
+│   └── index.jsx
+├── fair
+│   └── page.tsx
+├── faq
+│   └── index.jsx
+├── form
+│   └── index.jsx
+├── fraud
+│   └── page.jsx
+├── geography
+│   └── index.jsx
+├── global
+│   ├── Sidebar.jsx
+│   ├── styles.css
+│   └── Topbar.jsx
+├── goals
+│   └── page.tsx
+├── hub
+│   └── page.jsx
+├── insight
+│   ├── index.md
+│   └── page.jsx
+├── investadvice
+│   └── page.tsx
+├── investment
+│   └── page.tsx
+├── invoices
+│   └── index.jsx
+├── landingPage
+│   └── index.jsx
+├── line
+│   └── index.jsx
+├── majorinputs
+│   ├── InputForm.jsx
+│   ├── page.tsx
+│   └── TotalDebt.jsx
+├── myaccounts
+│   └── page.tsx
+├── mydebts
+│   └── page.tsx
+├── myfinances
+│   └── page.tsx
+├── mygoals
+│   └── page.tsx
+├── mynotifications
+│   └── page.tsx
+├── mytransactions
+│   └── page.tsx
+├── notifications
+│   └── page.jsx
+├── notify
+│   └── page.tsx
+├── overpriced
+│   └── page.tsx
+├── personalizedGoals
+│   ├── page.md
+│   └── page.tsx
+├── pie
+│   └── index.jsx
+├── plaid
+│   ├── equity.jpeg
+│   ├── kcb.jpeg
+│   ├── mpesa.jpeg
+│   └── page.tsx
+├── portfolio
+│   └── page.jsx
+├── preference
+│   └── page.tsx
+├── profile
+│   ├── page.tsx
+│   └── Profile.tsx
+├── recurrent
+│   └── page.tsx
+├── reminder
+│   └── page.tsx
+├── report
+│   ├── LineChart.tsx
+│   └── page.tsx
+├── savings
+│   └── page.jsx
+├── settings
+│   └── page.tsx
+├── summary
+│   └── page.tsx
+├── surpriseme
+│   ├── page.tsx
+│   └── thinking.css
+├── team
+│   └── index.jsx
+├── terms
+│   └── page.tsx
+├── trans
+│   └── page.tsx
+├── transactionForm
+│   ├── page.tsx
+│   └── TransactionForm.tsx
+├── transactionformBuild
+│   ├── FinancialInputPage.css
+│   └── page.jsx
+├── transactions
+│   ├── page.jsx
+│   └── TransactionTable.css
+└── upload
+    └── page.tsx    

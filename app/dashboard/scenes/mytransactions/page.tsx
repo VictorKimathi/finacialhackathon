@@ -12,20 +12,20 @@ import {
 import { useNewTransaction } from '../../hooks/use_new_transaction'; // Adjust if necessary
 import TransactionForm from '../transactionForm/page';
 
-type TransactionSheetProps = {
-    onSubmit: (values: any) => void; // Adjust this type according to your form data structure
-    disabled?: boolean;
-    accountOptions: { label: string; value: string }[]; // List of accounts for dropdown
-    categoryOptions: { label: string; value: string }[]; // List of categories for dropdown
-}
+// type TransactionSheetProps = {
 
-const TransactionSheet: React.FC<TransactionSheetProps> = ({
+//     accountOptions: { label: string; value: string }[]; // List of accounts for dropdown
+//     categoryOptions: { label: string; value: string }[]; // List of categories for dropdown
+// }
 
-    disabled = false,
-    accountOptions,
-    categoryOptions
-}) => {
-    console.log("High level category", categoryOptions)
+
+type TransactionFormProps = {
+    disabled?: boolean; // Optional boolean
+};
+
+
+const TransactionSheet = () => {
+ 
     const { isOpen, onClose } = useNewTransaction();
 
     return (
@@ -41,7 +41,7 @@ const TransactionSheet: React.FC<TransactionSheetProps> = ({
                 </SheetHeader>
 
                 <TransactionForm
-                    onSubmit={() => { }} disabled={false}
+                 disabled={false}
                 />
             </SheetContent>
         </Sheet>

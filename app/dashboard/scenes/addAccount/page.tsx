@@ -1,10 +1,11 @@
+"use client"
 import React, { useEffect } from 'react';
 import { Trash } from 'lucide-react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from 'axios';
 import { z } from "zod";
-import { base_url } from "../../../../env"
+import { base_url } from "../../../../env";
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -20,24 +21,23 @@ import { useAuth } from '../../provider/auth-provider';
 
 // Validation schema
 const formSchema = z.object({
-    // account: z.string()
-    //     .min(1, "Account  is required")
-    //     .max(20, "Account cannot exceed 20 characters"),
-    account_type: z.enum(["bank", "mpesa", "cash", "other"], "Select a valid account type"),
+    account_type: z.enum(["bank", "mpesa", "cash", "other"], {
+        required_error: "Account type is required",
+    }),
     bank_name: z.enum(["kcb", "equity", "family", "worldbank"]).optional(),
-    amount: z.string()
+    amount: z.string().min(1, "Amount is required").regex(/^\d+$/, "Amount must be a number"),
 });
 
 // Define the form value type based on the schema
 type FormValues = z.infer<typeof formSchema>;
 
-type Props = {
-    id?: string;
-    defaultValues?: FormValues;
-    onSubmit: (values: FormValues) => void;
-    onDelete?: () => void;
-    disabled?: boolean;
-};
+// type Props = {
+//     id?: string;
+//     defaultValues?: Partial<FormValues>;
+//     onSubmit: (values: FormValues) => void;
+//     onDelete?: () => void;
+//     disabled?: boolean;
+// };
 
 const ACCOUNT_TYPES = [
     { value: 'bank', label: 'Bank' },
@@ -53,17 +53,13 @@ const BANKS = [
     { value: 'worldbank', label: 'World Bank' },
 ];
 
-
-
 // Function to handle API call
 const saveAccountToServer = async (data: FormValues, getToken: () => string) => {
-    console.log("Data to send to server:", data); // Log the form data
-
     try {
         const response = await axios.post(
-        `${base_url}/api/accounts/`,
+            `${base_url}/api/accounts/`,
             {
-                user: 1,
+                user: 1, // Replace with dynamic user ID if applicable
                 ...data,
             },
             {
@@ -73,24 +69,20 @@ const saveAccountToServer = async (data: FormValues, getToken: () => string) => 
                 },
             }
         );
-        console.log("Bank saved:", response.data);
+        console.log("Account saved:", response.data);
     } catch (error) {
-        console.log("Error saving bank:", error.response || error); // Log detailed error response
+        console.error("Error saving account:", error?.response?.data || error.message);
     }
 };
 
 const AccountForm = ({
     id,
-    defaultValues,
+    defaultValues = {},
     onSubmit,
     onDelete,
-    disabled
+    disabled,
 }: Props) => {
     const { getToken } = useAuth();
-
-
-
-
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -104,103 +96,94 @@ const AccountForm = ({
             await saveAccountToServer(values, getToken); // Save account to server
             onSubmit(values); // Trigger onSubmit callback
         } catch (error) {
-            console.log("Error during form submission:", error);
+            console.error("Error during form submission:", error);
         }
     };
 
-    // Log validation errors
-    React.useEffect(() => {
-        const errors = form.formState.errors;
-        if (Object.keys(errors).length > 0) {
-            console.log("Validation errors:", errors); // Log any validation errors
-            Object.keys(errors).forEach((field) => {
-                console.log(`${field} validation error:`, errors[field]?.message);
-            });
+    useEffect(() => {
+        if (Object.keys(form.formState.errors).length > 0) {
+            console.warn("Validation errors:", form.formState.errors);
         }
     }, [form.formState.errors]);
 
     return (
         <Form {...form}>
             <form className="space-y-4 pt-4" onSubmit={form.handleSubmit(handleSubmit)}>
-                {/* Account Number Field */}
-                {/* <FormField name="account" control={form.control} render={({ field }) => (
-                    <FormItem>
-                        <FormLabel className="text-black">Account Number</FormLabel>
-                        <FormControl>
-                            <Input
-                                disabled={disabled}
-                                placeholder="Enter account "
-                                className="text-black"
-                                {...field}
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} /> */}
-
                 {/* Account Type Field */}
-                <FormField name="account_type" control={form.control} render={({ field }) => (
-                    <FormItem>
-                        <FormLabel className="text-black">Account Type</FormLabel>
-                        <FormControl>
-                            <select
-                                disabled={disabled}
-                                {...field}
-                                className="border rounded p-2 w-full text-black"
-                            >
-                                <option value="">Select an account type</option>
-                                {ACCOUNT_TYPES.map((type) => (
-                                    <option key={type.value} value={type.value}>
-                                        {type.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
+                <FormField
+                    name="account_type"
+                    control={form.control}
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className="text-black">Account Type</FormLabel>
+                            <FormControl>
+                                <select
+                                    disabled={disabled}
+                                    {...field}
+                                    className="border rounded p-2 w-full text-black"
+                                >
+                                    <option value="">Select an account type</option>
+                                    {ACCOUNT_TYPES.map((type) => (
+                                        <option key={type.value} value={type.value}>
+                                            {type.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
                 {/* Bank Name Field */}
-                <FormField name="bank_name" control={form.control} render={({ field }) => (
-                    <FormItem>
-                        <FormLabel className="text-black">Bank Name</FormLabel>
-                        <FormControl>
-                            <select
-                                disabled={disabled || accountType !== "bank"}
-                                {...field}
-                                className="border rounded p-2 w-full text-black"
-                            >
-                                <option value="">Select a bank</option>
-                                {BANKS.map((bank) => (
-                                    <option key={bank.value} value={bank.value}>
-                                        {bank.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
+                <FormField
+                    name="bank_name"
+                    control={form.control}
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className="text-black">Bank Name</FormLabel>
+                            <FormControl>
+                                <select
+                                    disabled={disabled || accountType !== "bank"}
+                                    {...field}
+                                    className="border rounded p-2 w-full text-black"
+                                >
+                                    <option value="">Select a bank</option>
+                                    {BANKS.map((bank) => (
+                                        <option key={bank.value} value={bank.value}>
+                                            {bank.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
                 {/* Amount Field */}
-                <FormField name="amount" control={form.control} render={({ field }) => (
-                    <FormItem>
-                        <FormLabel className="text-black">Amount</FormLabel>
-                        <FormControl>
-                            <Input
-                                disabled={disabled}
-                                placeholder="e.g. 1000"
-                                className="text-black"
-                                {...field}
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
+                <FormField
+                    name="amount"
+                    control={form.control}
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className="text-black">Amount</FormLabel>
+                            <FormControl>
+                                <Input
+                                    disabled={disabled}
+                                    placeholder="e.g. 1000"
+                                    className="text-black"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
                 {/* Submit and Delete Buttons */}
                 <div className="flex items-center gap-4 pt-4">
-                    <Button className="w-full" disabled={disabled}>
+                    <Button className="w-full" type="submit" disabled={disabled}>
                         {id ? "Save changes" : "Create account"}
                     </Button>
                     {onDelete && (

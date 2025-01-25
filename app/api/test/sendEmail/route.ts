@@ -1,11 +1,15 @@
-// app/api/sendEmail/route.js
-
 import nodemailer from 'nodemailer';
 import { NextResponse } from 'next/server';
 
-export async function POST(req) {
+interface EmailRequestBody {
+  reminder: string;
+  reminderDate: string;
+  email: string;
+}
+
+export async function POST(req: Request) {
   try {
-    const { reminder, reminderDate, email } = await req.json();
+    const { reminder, reminderDate, email }: EmailRequestBody = await req.json();
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -24,13 +28,11 @@ export async function POST(req) {
 
     const info = await transporter.sendMail(mailOptions);
 
-    // Using NextResponse to return JSON with status 200
     return NextResponse.json(
       { message: 'Email sent successfully!', info },
       { status: 200 }
     );
-  } catch (error) {
-    // Using NextResponse to return error with status 500
+  } catch (error: any) {
     return NextResponse.json(
       { error: 'Failed to send email', details: error.message },
       { status: 500 }

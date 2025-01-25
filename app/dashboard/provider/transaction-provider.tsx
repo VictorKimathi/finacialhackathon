@@ -25,11 +25,12 @@ export const SheetProvider = () => {
 
     return (
         <>
-            <TransactionSheet 
-               
-                accountOptions={accountOptions} 
-                categoryOptions={categoryOptions} 
-            />
+<TransactionForm
+
+    accountOptions={accountOptions}
+    categoryOptions={categoryOptions}
+/>
+
         </>
     )
 }

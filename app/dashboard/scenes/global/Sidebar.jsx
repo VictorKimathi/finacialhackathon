@@ -166,6 +166,23 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+  <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              Stellar
+            </Typography>
+
+            <Item
+              title="Stellar Crowdfunding"
+              to="/dashboard/scenes/pricing"
+              icon={<AttachMoneyOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+
 
             {/* Settings */}
             <Typography
