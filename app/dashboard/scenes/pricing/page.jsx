@@ -43,6 +43,11 @@ export default function Crowd() {
       setCampaigns([...campaigns, response.data]);
       console.log("Campaigns state updated with new campaign:", [...campaigns, response.data]);
       alert("Campaign created successfully!");
+      // Clear form fields after successful submission
+      setTitle("");
+      setDescription("");
+      setTarget("");
+      setWallet("");
     } catch (error) {
       console.error("Error creating campaign:", error);
     }
@@ -57,32 +62,44 @@ export default function Crowd() {
             type="text"
             placeholder="Title"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              console.log("Title input changed:", e.target.value); // Debugging
+              setTitle(e.target.value);
+            }}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-800"
           />
           <textarea
             placeholder="Description"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => {
+              console.log("Description input changed:", e.target.value); // Debugging
+              setDescription(e.target.value);
+            }}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none text-gray-800"
           />
           <input
             type="number"
             placeholder="Target Amount"
             value={target}
-            onChange={(e) => setTarget(e.target.value)}
+            onChange={(e) => {
+              console.log("Target input changed:", e.target.value); // Debugging
+              setTarget(e.target.value);
+            }}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-800"
           />
           <input
             type="text"
             placeholder="Stellar Wallet Address"
             value={wallet}
-            onChange={(e) => setWallet(e.target.value)}
+            onChange={(e) => {
+              console.log("Wallet input changed:", e.target.value); // Debugging
+              setWallet(e.target.value);
+            }}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-800"
           />
           <button
             type="submit"
@@ -101,6 +118,14 @@ export default function Crowd() {
               <Link href={`/dashboard/scenes/campaigns/${index}`} className="text-blue-600 font-medium hover:underline">
                 {campaign.title}
               </Link>
+              <p className="text-gray-600">{campaign.description}</p>
+              <p className="text-gray-600">Target: {campaign.target} XLM</p>
+              <p className="text-gray-600">Wallet: {campaign.wallet}</p>
+              <div className="mt-2">
+                <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                  <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${(campaign.currentAmount / campaign.target) * 100}%` }}></div>
+                </div>
+              </div>
             </li>
           ))}
         </ul>
@@ -108,5 +133,3 @@ export default function Crowd() {
     </div>
   );
 }
-
-

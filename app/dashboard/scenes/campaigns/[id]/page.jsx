@@ -59,6 +59,7 @@ export default function CampaignDetails() {
       });
       alert(response.data.message);
       fetchContributions(); // Refresh contributions after successful contribution
+      setAmount(""); // Clear the input field after submission
     } catch (error) {
       console.error("Error contributing:", error);
       alert("Failed to contribute. Check the console for details.");
@@ -70,12 +71,18 @@ export default function CampaignDetails() {
   if (!campaign) return <p>Campaign not found</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
+    <div className="min-h-screen bg-gray-900 py-8 px-4">
       <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">{campaign.title}</h1>
         <p className="text-gray-600 mb-4">{campaign.description}</p>
         <p className="text-gray-600 mb-4">Target: {campaign.target} XLM</p>
         <p className="text-gray-600 mb-4">Wallet: {campaign.wallet}</p>
+
+        <div className="mt-2">
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+            <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${(campaign.currentAmount / campaign.target) * 100}%` }}></div>
+          </div>
+        </div>
 
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Contributions</h2>
         <ul className="space-y-2">
@@ -85,6 +92,7 @@ export default function CampaignDetails() {
                 <p className="text-gray-700">
                   {contribution.amount} XLM from {contribution.from} at {contribution.timestamp}
                 </p>
+                <p className="text-gray-500 text-sm">Transaction Hash: {contribution.transaction_hash}</p>
               </li>
             ))
           ) : (
@@ -97,9 +105,12 @@ export default function CampaignDetails() {
             type="number"
             placeholder="Amount"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => {
+              console.log("Amount input changed:", e.target.value); // Debugging
+              setAmount(e.target.value);
+            }}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none mb-4"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none mb-4 text-gray-800"
           />
           <button
             type="submit"

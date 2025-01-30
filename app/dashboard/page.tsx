@@ -25,6 +25,7 @@ import { useNewPersonalizedGoal } from "./hooks/use_new_personalized";
 import { useNewAnomallyDetection } from "./hooks/use_new_anomally";
 import { base_url } from "../../env"
 import Fraud from "../dashboard/scenes/fraud/page"
+import ProgressCircle from "./components/ProgressCircle";
 
 const Dashboard = () => {
   const { getToken } = useAuth();
@@ -49,9 +50,9 @@ const Dashboard = () => {
   //         console.log('Test embedding error:', error);
   //     }
   // }
-  
+
   // testEmbedding();
-  
+
 
 
 
@@ -68,7 +69,7 @@ const Dashboard = () => {
 
 
   const { onDebtOpen } = useNewDebt()
-
+  const [fraudDetected, setFraudDetected] = useState(false);
 
   const [totalDebt, setTotalDebt] = useState(null);
   const [allTransactions, setAllTransactions] = useState([]); // State for all transactions
@@ -215,7 +216,7 @@ const Dashboard = () => {
         setError(err.message);
       }
     };
-    
+
     const fetchAccounts = async () => {
       try {
         const response = await fetch(`${base_url}/api/accounts/`, {
@@ -230,10 +231,10 @@ const Dashboard = () => {
           throw new Error("Failed to fetch financial goals");
         }
         const data = await response.json();
-        setAccounts(data); 
+        setAccounts(data);
         console.log("Financial Goals:", data);
 
-    
+
         // if (!response.ok) {
         //   throw new Error("Failed to fetch financial summary");
         // }
@@ -358,8 +359,8 @@ const Dashboard = () => {
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             See Personalized FinanceGoals
           </Button>
-         
-         
+
+
           <Button
             onClick={handleDownloadReport}
             sx={{
@@ -378,8 +379,8 @@ const Dashboard = () => {
       </Box>
 
       {/* GRID & CHARTS */}
-     <Box
-         display="grid"
+      <Box
+        display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="140px"
         gap="20px"
@@ -482,9 +483,9 @@ const Dashboard = () => {
           />
         </Box> */}
 
-        
- 
-   
+
+
+
         {/* ROW 2 */}
 
 
@@ -584,71 +585,113 @@ const Dashboard = () => {
         <Box
           gridColumn="span 4"
           gridRow="span 2"
-          backgroundColor={colors.primary[400]}
+          // backgroundColor="#1E88E5"
           p="30px"
+          borderRadius="8px"
+          boxShadow="2px 4px 10px rgba(0,0,0,0.1)"
         >
-          <Typography variant="h5" fontWeight="600">
+          <Typography variant="h5" fontWeight="600" color="white" mb={2}>
             Fraud Detection Analysis
           </Typography>
-          {/* Under Development */}
-          {/* <Fraud /> */}
 
-          {/* <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
-            >
-            <ProgressCircle size="125" />
-            <Typography
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              $48,352 revenue generated
+          <Typography variant="body1" color="white">
+            <strong>Transaction Amount:</strong> No unusual or large transactions detected.
+          </Typography>
+          <Typography variant="body1" color="white">
+            <strong>Transaction Time:</strong> No odd transaction times recorded.
+          </Typography>
+          <Typography variant="body1" color="white">
+            <strong>Transaction Frequency:</strong> No sudden spikes in transactions.
+          </Typography>
+          <Typography variant="body1" color="white">
+            <strong>User's Historical Behavior:</strong> No significant deviations detected.
+          </Typography>
+
+          <Box mt={2} p={2} bgcolor="green" borderRadius="4px">
+            <Typography variant="body1" color="white" textAlign="center">
+              ✅ No Fraudulent Activity Recorded
             </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
-          </Box> */}
-
-
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-            Investement Portfolio Analysis
-          </Typography>
-          {/* <Box height="250px" mt="-20px"> */}
-          <Box height="250px">
-
-            {/* <BarChart isDashboard={true} /> */}
-            {/* Under Development */}
           </Box>
         </Box>
         <Box
           gridColumn="span 4"
           gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          padding="30px"
+          // backgroundColor="#1E88E5"
+          borderRadius="8px"
+          boxShadow="2px 4px 10px rgba(0,0,0,0.1)"
         >
           <Typography
             variant="h5"
             fontWeight="600"
-            sx={{ marginBottom: "15px" }}
+            sx={{ padding: "30px 30px 0 30px", color: "white" }}
           >
-            Credit Score Analysis
+            Investment Portfolio Analysis
           </Typography>
-          <Box height="200px">
-            {/* Under Development */}
-            {/* <GeographyChart isDashboard={true} /> */}
+
+          <Box height="250px" p="30px">
+            <Typography variant="body1" color="white">
+              <strong>Portfolio Value:</strong> $250,000
+            </Typography>
+            <Typography variant="body1" color="white">
+              <strong>Risk Level:</strong> Moderate
+            </Typography>
+            <Typography variant="body1" color="white">
+              <strong>Asset Allocation:</strong> 60% Stocks, 30% Bonds, 10% Cash
+            </Typography>
+            <Typography variant="body1" color="white">
+              <strong>Performance YTD:</strong> +12.5%
+            </Typography>
+            <Typography variant="body1" color="white">
+              <strong>Top Performing Asset:</strong> Tesla (+18%)
+            </Typography>
+
+            <Box mt={2} p={2} bgcolor="green" borderRadius="4px">
+              <Typography variant="body1" color="white" textAlign="center">
+                📈 Portfolio is Performing Well
+              </Typography>
+            </Box>
           </Box>
         </Box>
+        <Box
+      gridColumn="span 4"
+      gridRow="span 2"
+      // backgroundColor="#1E88E5"
+      padding="30px"
+      borderRadius="8px"
+      boxShadow="2px 4px 10px rgba(0,0,0,0.1)"
+    >
+      <Typography
+        variant="h5"
+        fontWeight="600"
+        sx={{ marginBottom: "15px", color: "white" }}
+      >
+        Credit Score Analysis
+      </Typography>
+
+      <Box height="200px">
+        <Typography variant="body1" color="white">
+          <strong>Current Credit Score:</strong> 750 (Excellent)
+        </Typography>
+        <Typography variant="body1" color="white">
+          <strong>Payment History:</strong> 99% On-time Payments
+        </Typography>
+        <Typography variant="body1" color="white">
+          <strong>Credit Utilization:</strong> 28% (Recommended &lt; 30%)
+        </Typography>
+        <Typography variant="body1" color="white">
+          <strong>Number of Credit Accounts:</strong> 5 Active Accounts
+        </Typography>
+        <Typography variant="body1" color="white">
+          <strong>Recent Hard Inquiries:</strong> 1 in the last 6 months
+        </Typography>
+
+        <Box mt={2} p={2} bgcolor="green" borderRadius="4px">
+          <Typography variant="body1" color="white" textAlign="center">
+            ✅ Your Credit Health is in Good Standing
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
       </Box>
     </Box>
   );

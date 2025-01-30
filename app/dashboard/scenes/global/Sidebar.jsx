@@ -145,6 +145,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+                     <Item
+              title="Upload file"
+              to="/dashboard/scenes/files"
+              icon={<PeopleAltOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
             <Item
               title="Surprise Me"
               to="/dashboard/scenes/surpriseme"
