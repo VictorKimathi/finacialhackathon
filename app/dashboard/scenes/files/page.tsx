@@ -1,66 +1,13 @@
-// "use client";
-// import React, { useState } from 'react'
-// import { UplaodButton } from '../../components/upload-button'
-// import ImportCard from './import-card';
-
-// const INITIAL_UPLOAD_RESULTS = {
-//     data    : [],
-//     errors  : [],
-//     meta   : {}
-// }
-
-
-// const Variant = {
-//     Import : 'Import',
-//     Results : 'Results'
-// }
-
-// const page = () => {
-//     const [variant, setVariant] = useState(Variant.Import);
-//     //I want to trigger the screen that wwill contain the uploadeed information
-//     const upload = (results: typeof INITIAL_UPLOAD_RESULTS) => {
-//         console.log(results);
-//         setImportResults(results);
-//     }
-
-//     const onCancelUPload = () => {
-//         setImportResults(INITIAL_UPLOAD_RESULTS);
-//         setVariant(Variant.Import);
-//     }
-
-
-//  const [importResults , setImportResults ] =  useState<typeof INITIAL_UPLOAD_RESULTS>(INITIAL_UPLOAD_RESULTS);
- 
-// //  if (variant === Variant.Results) {
-// //      return (
-// //          <div>
-// //              <button onClick={onCancelUPload}>Back</button>
-// //              <pre>{JSON.stringify(importResults, null, 2)}</pre>
-// //          </div>
-// //      )
-// //     }
-
-
-
-//   return (
-//     <div>
-
-
-//         <UplaodButton onUpload={upload} />
-//         <ImportCard data={importResults.data} onCancel={onCancelUPload}  onSubmit={()=>{}}/>
-
-//     </div>
-//   )
-// }
-
-// export default page
 "use client";
 import React, { useState } from 'react';
 import { UplaodButton } from '../../components/upload-button';
 import ImportCard from './import-card';
+import axios from 'axios';
+import { base_url } from '@/env';
+import { useAuth } from '../../provider/auth-provider';
 
 const INITIAL_UPLOAD_RESULTS = {
-    data: [],
+    data: [] as string[][],
     errors: [],
     meta: {},
 };
@@ -73,21 +20,51 @@ const Variant = {
 const Page = () => {
     const [variant, setVariant] = useState(Variant.Import);
     const [importResults, setImportResults] = useState<typeof INITIAL_UPLOAD_RESULTS>(INITIAL_UPLOAD_RESULTS);
+    const [isLoading, setIsLoading] = useState(false);
+    const { getToken } = useAuth();
+    const [data, setData] = useState("");
+    const submitNewMessage = async (csv_data: string) => {
+        if (!csv_data.trim()) return;
+        setIsLoading(true);
 
-    // Trigger screen to display uploaded information
+        try {
+            const response = await axios.post(
+                `${base_url}/api/chat/csv_chat/`,
+                { message: csv_data },
+                {
+                    headers: {
+                        "Authorization": `Token ${getToken()}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            const assistantReply = response.data.response;
+            console.log("Assistant reply:", assistantReply);
+            setData(assistantReply)
+            // Handle the assistant's reply as needed
+
+        } catch (error) {
+            console.error("Error sending message:", error);
+            // Optionally, set an error message in the state to display to the user
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const upload = (results: typeof INITIAL_UPLOAD_RESULTS) => {
-        console.log(results);
+        console.log("Incoming results:", results.data);
+        const csv_data = JSON.stringify(results.data);
+        submitNewMessage(csv_data);
         setImportResults(results);
         setVariant(Variant.Results);
     };
 
-    // Handle canceling upload
     const onCancelUpload = () => {
         setImportResults(INITIAL_UPLOAD_RESULTS);
         setVariant(Variant.Import);
     };
 
-    // Render results or the upload form based on the variant
     if (variant === Variant.Results) {
         return (
             <div className="flex flex-col items-center">
@@ -135,13 +112,27 @@ const Page = () => {
                         // Handle the submit action here
                     }}
                 />
+
+                <div>
+                    {data ?
+                        <div>
+                            {data}
+                        </div> : ""
+                    }
+                </div>
             </div>
         );
     }
 
     return (
         <div className="flex flex-col items-center">
+            <h1 className="text-2xl font-bold mb-4">Upload Your CSV File</h1>
+            <p className="text-gray-600 text-center mb-6 max-w-lg">
+                Please select a CSV file from your computer. The first row should contain column headers, and the data should be properly formatted.
+                After uploading, you'll be able to preview the contents and confirm before proceeding.
+            </p>
             <UplaodButton onUpload={upload} />
+            {isLoading && <p className="mt-4">Loading...</p>}
         </div>
     );
 };
